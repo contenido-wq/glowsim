@@ -213,7 +213,7 @@ created_at   timestamptz DEFAULT now()
 - `procedures`: admin solo accede a procedimientos de su negocio
 - `sessions_log`: INSERT público anónimo, SELECT solo para admin de ese negocio y superadmin
 - `business_types` / `procedure_zones`: lectura pública, escritura solo superadmin
-- Superadmin: usuario especial con política `bypass` en todas las tablas
+- Superadmin: usuario con email fijo definido en variable de entorno `SUPERADMIN_EMAIL` — la política RLS verifica `auth.jwt() ->> 'email' = SUPERADMIN_EMAIL`
 
 ---
 
@@ -502,7 +502,8 @@ UTM params capturados automáticamente de la URL en cada evento.
 2. **Fotos no persistidas:** La foto del visitante solo vive en base64 durante el análisis. No se guarda en Storage.
 3. **Sin billing en el MVP:** El modelo de venta es precio fijo por implementación — no hay lógica de suscripciones ni Stripe en esta versión.
 4. **Mobile-first:** El simulador está diseñado primero para celular. El 80%+ del tráfico llega desde redes sociales vía móvil.
-5. **Temperatura Gemini:** 0.1 para outputs consistentes y reproducibles.
+5. **SVG FaceMap:** Archivos SVG estáticos en `/public/facemaps/face.svg`, `hair.svg`, `hands.svg`, `brows.svg`. Cada zona es un elemento `<path>` o `<ellipse>` con `id` que coincide con el campo `svg_id` de `procedure_zones`. Se resaltan vía clase CSS dinámica.
+6. **Temperatura Gemini:** 0.1 para outputs consistentes y reproducibles.
 6. **Gemini 2.0 Flash:** Elegido sobre GPT-4o y Claude por velocidad + costo. 20x más barato que GPT-4o con calidad suficiente para análisis estético.
 
 ---
