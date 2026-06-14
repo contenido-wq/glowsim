@@ -34,7 +34,7 @@ export async function middleware(req: NextRequest) {
     if (!session && pathname !== '/superadmin/login') {
       return NextResponse.redirect(new URL('/superadmin/login', req.url))
     }
-    if (session && session.user.email !== process.env.SUPERADMIN_EMAIL) {
+    if (!process.env.SUPERADMIN_EMAIL || session?.user.email !== process.env.SUPERADMIN_EMAIL) {
       return NextResponse.redirect(new URL('/admin/login', req.url))
     }
     return res
