@@ -10,10 +10,10 @@ export default async function PublicPage({
 }: {
   searchParams: Record<string, string>
 }) {
-  const businessId = headers().get('X-Business-ID')
+  const businessId = (await headers()).get('X-Business-ID')
   if (!businessId) return null
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: business } = await supabase
     .from('businesses')
     .select('*, business_types(face_map_type)')

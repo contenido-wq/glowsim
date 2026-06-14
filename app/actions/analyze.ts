@@ -13,7 +13,7 @@ export async function analyzeImage(
 
   const cleanBase64 = base64.includes(',') ? base64.split(',')[1] : base64
 
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: business, error: bizError } = await supabase
     .from('businesses')

@@ -2,7 +2,7 @@ import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
-  const headersList = headers()
+  const headersList = await headers()
   const businessId = headersList.get('X-Business-ID')
 
   if (!businessId) {
@@ -16,7 +16,7 @@ export default async function PublicLayout({ children }: { children: React.React
     )
   }
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: business } = await supabase
     .from('businesses')
     .select('primary_color, secondary_color')

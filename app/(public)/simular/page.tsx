@@ -6,10 +6,10 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 
 export default async function SimularPage() {
-  const businessId = headers().get('X-Business-ID')
+  const businessId = (await headers()).get('X-Business-ID')
   if (!businessId) notFound()
 
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: business } = await supabase
     .from('businesses')
     .select('*, business_types(face_map_type)')
