@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 130" fill="none" width="100%" height="100%" style="position:absolute;inset:0;">
+  <ellipse id="ceja_izq" cx="30" cy="42" rx="22" ry="8" fill="currentColor" opacity="0" class="facemap-zone"/>
+  <ellipse id="ceja_der" cx="70" cy="42" rx="22" ry="8" fill="currentColor" opacity="0" class="facemap-zone"/>
+  <ellipse id="labio_superior" cx="50" cy="72" rx="20" ry="7" fill="currentColor" opacity="0" class="facemap-zone"/>
+  <ellipse id="labio_inferior" cx="50" cy="85" rx="18" ry="7" fill="currentColor" opacity="0" class="facemap-zone"/>
+</svg>

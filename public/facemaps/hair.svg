@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 130" fill="none" width="100%" height="100%" style="position:absolute;inset:0;">
+  <ellipse id="parte_superior" cx="50" cy="18" rx="30" ry="16" fill="currentColor" opacity="0" class="facemap-zone"/>
+  <ellipse id="lado_izq" cx="18" cy="50" rx="14" ry="22" fill="currentColor" opacity="0" class="facemap-zone"/>
+  <ellipse id="lado_der" cx="82" cy="50" rx="14" ry="22" fill="currentColor" opacity="0" class="facemap-zone"/>
+  <ellipse id="nuca" cx="50" cy="95" rx="26" ry="14" fill="currentColor" opacity="0" class="facemap-zone"/>
+  <ellipse id="barba" cx="50" cy="78" rx="18" ry="10" fill="currentColor" opacity="0" class="facemap-zone"/>
+  <ellipse id="patillas" cx="50" cy="62" rx="28" ry="8" fill="currentColor" opacity="0" class="facemap-zone"/>
+</svg>
