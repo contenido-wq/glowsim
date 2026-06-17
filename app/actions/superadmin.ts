@@ -36,6 +36,8 @@ export async function createBusiness(formData: FormData) {
   const name = formData.get('name') as string
   const slug = (formData.get('slug') as string).toLowerCase().replace(/\s+/g, '-')
   const whatsappNumber = formData.get('whatsapp_number') as string
+  const accessMethod = (formData.get('access_method') as string) || 'email'
+  const adminPassword = formData.get('admin_password') as string | null
 
   const serviceClient = createServiceClient()
 
@@ -47,18 +49,38 @@ export async function createBusiness(formData: FormData) {
 
   if (bizError || !business) throw new Error(bizError?.message ?? 'Error al crear negocio')
 
-  const { data: inviteData, error: inviteError } = await serviceClient.auth.admin.inviteUserByEmail(adminEmail, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/admin/login`,
-    data: { full_name: adminName },
-  })
+  let authUserId: string
 
-  if (inviteError || !inviteData.user) {
-    await serviceClient.from('businesses').delete().eq('id', business.id)
-    throw new Error(inviteError?.message ?? 'Error al invitar admin')
+  if (accessMethod === 'password') {
+    if (!adminPassword || adminPassword.length < 8) {
+      await serviceClient.from('businesses').delete().eq('id', business.id)
+      throw new Error('La contraseña debe tener al menos 8 caracteres')
+    }
+    const { data: created, error: createError } = await serviceClient.auth.admin.createUser({
+      email: adminEmail,
+      password: adminPassword,
+      email_confirm: true,
+      user_metadata: { full_name: adminName },
+    })
+    if (createError || !created.user) {
+      await serviceClient.from('businesses').delete().eq('id', business.id)
+      throw new Error(createError?.message ?? 'Error al crear usuario')
+    }
+    authUserId = created.user.id
+  } else {
+    const { data: inviteData, error: inviteError } = await serviceClient.auth.admin.inviteUserByEmail(adminEmail, {
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/admin/login`,
+      data: { full_name: adminName },
+    })
+    if (inviteError || !inviteData.user) {
+      await serviceClient.from('businesses').delete().eq('id', business.id)
+      throw new Error(inviteError?.message ?? 'Error al invitar admin')
+    }
+    authUserId = inviteData.user.id
   }
 
   await serviceClient.from('business_users').insert({
-    user_id: inviteData.user.id,
+    user_id: authUserId,
     business_id: business.id,
     role: 'admin',
   })
