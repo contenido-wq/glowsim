@@ -1,6 +1,6 @@
 'use client'
 
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { createBusiness } from '@/app/actions/superadmin'
 import { toast } from 'sonner'
@@ -35,6 +35,8 @@ const inputStyle: React.CSSProperties = {
 export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessType[] }) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const [accessMethod, setAccessMethod] = useState<'email' | 'password'>('email')
+  const [showPassword, setShowPassword] = useState(false)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -42,7 +44,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
     startTransition(async () => {
       try {
         await createBusiness(formData)
-        toast('Negocio creado y admin invitado por email')
+        toast(accessMethod === 'email' ? 'Negocio creado — invitación enviada por email' : 'Negocio creado — el admin ya puede ingresar')
         router.push('/superadmin/dashboard/negocios')
       } catch (err: unknown) {
         toast.error(err instanceof Error ? err.message : 'Error al crear negocio')
@@ -128,7 +130,39 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
           />
         </Field>
 
-        <Field label="Email del admin" hint="Recibirá un correo para crear su contraseña">
+        {/* Método de acceso */}
+        <div className="space-y-3">
+          <span className="block text-[10px] uppercase tracking-widest font-medium" style={{ color: '#9AAAB8' }}>
+            Método de acceso
+          </span>
+          <div className="flex flex-col gap-2">
+            {([
+              { value: 'email', label: 'Enviar invitación por email' },
+              { value: 'password', label: 'Crear con contraseña directa' },
+            ] as const).map(({ value, label }) => (
+              <label
+                key={value}
+                className="flex items-center gap-3 cursor-pointer select-none"
+              >
+                <input
+                  type="radio"
+                  name="access_method"
+                  value={value}
+                  checked={accessMethod === value}
+                  onChange={() => setAccessMethod(value)}
+                  className="accent-blue-600"
+                  style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                />
+                <span className="text-sm" style={{ color: '#0D1E2C' }}>{label}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <Field
+          label="Email del admin"
+          hint={accessMethod === 'email' ? 'Recibirá un correo para crear su contraseña' : 'El admin usará este email para ingresar'}
+        >
           <input
             name="admin_email"
             type="email"
@@ -139,6 +173,35 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             onBlur={e => (e.target.style.borderColor = '#D4E4EE')}
           />
         </Field>
+
+        {accessMethod === 'password' && (
+          <Field label="Contraseña" hint="Mínimo 8 caracteres — compártela directamente con el admin">
+            <div className="relative">
+              <input
+                name="admin_password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                minLength={8}
+                placeholder="••••••••"
+                style={{ ...inputStyle, paddingRight: '44px' }}
+                onFocus={e => (e.target.style.borderColor = '#1B72D9')}
+                onBlur={e => (e.target.style.borderColor = '#D4E4EE')}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(v => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
+                style={{ color: '#9AAAB8', background: 'none', border: 'none', cursor: 'pointer', lineHeight: 0 }}
+              >
+                {showPassword ? (
+                  <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                ) : (
+                  <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                )}
+              </button>
+            </div>
+          </Field>
+        )}
 
         <button
           type="submit"
@@ -155,7 +218,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             letterSpacing: '0.01em',
           }}
         >
-          {isPending ? 'Creando negocio...' : 'Crear negocio y enviar invitación'}
+          {isPending ? 'Creando negocio...' : accessMethod === 'email' ? 'Crear negocio y enviar invitación' : 'Crear negocio'}
         </button>
       </form>
     </div>
