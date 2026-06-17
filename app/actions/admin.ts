@@ -75,3 +75,25 @@ export async function deleteProcedure(procedureId: string) {
     .eq('business_id', businessId)
   revalidatePath('/admin/dashboard/procedimientos')
 }
+
+export async function updateBusinessLogo(logoUrl: string) {
+  const supabase = await createClient()
+  const businessId = await getAdminBusinessId()
+  const { error } = await supabase
+    .from('businesses')
+    .update({ logo_url: logoUrl })
+    .eq('id', businessId)
+  if (error) throw new Error(error.message)
+  revalidatePath('/admin/dashboard/configuracion')
+}
+
+export async function removeBusinessLogo() {
+  const supabase = await createClient()
+  const businessId = await getAdminBusinessId()
+  const { error } = await supabase
+    .from('businesses')
+    .update({ logo_url: null })
+    .eq('id', businessId)
+  if (error) throw new Error(error.message)
+  revalidatePath('/admin/dashboard/configuracion')
+}
