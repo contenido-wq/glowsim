@@ -8,7 +8,7 @@ import { logEvent } from '@/app/actions/analytics'
 export default async function PublicPage({
   searchParams,
 }: {
-  searchParams: Record<string, string>
+  searchParams: Promise<Record<string, string>>
 }) {
   const businessId = (await headers()).get('X-Business-ID')
   if (!businessId) return null
@@ -29,16 +29,18 @@ export default async function PublicPage({
     .eq('is_active', true)
     .order('sort_order')
 
+  const params = await searchParams
+
   // Fire-and-forget — no await para no bloquear render
   logEvent({
     business_id: businessId,
     session_id: 'server-visit',
     event_type: 'visit',
-    utm_source: searchParams.utm_source ?? null,
-    utm_medium: searchParams.utm_medium ?? null,
-    utm_campaign: searchParams.utm_campaign ?? null,
-    utm_term: searchParams.utm_term ?? null,
-    utm_content: searchParams.utm_content ?? null,
+    utm_source: params.utm_source ?? null,
+    utm_medium: params.utm_medium ?? null,
+    utm_campaign: params.utm_campaign ?? null,
+    utm_term: params.utm_term ?? null,
+    utm_content: params.utm_content ?? null,
   })
 
   return (
