@@ -31,6 +31,7 @@ export async function createBusiness(formData: FormData) {
   await assertSuperAdmin()
 
   const adminEmail = formData.get('admin_email') as string
+  const adminName = formData.get('admin_name') as string
   const businessTypeId = formData.get('business_type_id') as string
   const name = formData.get('name') as string
   const slug = (formData.get('slug') as string).toLowerCase().replace(/\s+/g, '-')
@@ -48,6 +49,7 @@ export async function createBusiness(formData: FormData) {
 
   const { data: inviteData, error: inviteError } = await serviceClient.auth.admin.inviteUserByEmail(adminEmail, {
     redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/admin/login`,
+    data: { full_name: adminName },
   })
 
   if (inviteError || !inviteData.user) {
