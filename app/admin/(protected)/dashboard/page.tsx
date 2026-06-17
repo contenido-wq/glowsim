@@ -37,10 +37,15 @@ export default async function AdminDashboardPage() {
   }
 
   return (
-    <div className="p-6 max-w-2xl">
-      <div className="mb-6">
-        <h1 className="text-xl font-bold text-white">Overview</h1>
-        <p className="text-zinc-400 text-sm">Métricas del mes actual</p>
+    <div className="p-8 max-w-3xl">
+      <div className="mb-8">
+        <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color: '#9AAAB8' }}>
+          Panel de control
+        </p>
+        <h1 className="text-2xl font-bold" style={{ color: '#0D1E2C' }}>{business?.name}</h1>
+        <p className="text-sm mt-1" style={{ color: '#6B8194' }}>
+          Métricas del mes actual
+        </p>
       </div>
       <MetricsCards metrics={metrics} businessSlug={business?.slug ?? ''} />
     </div>

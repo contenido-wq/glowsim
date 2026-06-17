@@ -19,7 +19,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const business = businessUser.businesses as any
 
   return (
-    <div className="flex min-h-screen bg-zinc-950">
+    <div className="flex min-h-screen" style={{ background: '#F0F5F8' }}>
       <div className="hidden lg:flex">
         <Sidebar businessName={business.name} businessSlug={business.slug} />
       </div>

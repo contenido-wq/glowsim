@@ -2,29 +2,23 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Settings, List, BarChart2, LogOut, ExternalLink } from 'lucide-react'
+import { LayoutDashboard, Building2, BarChart2, LogOut, Plus } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 const NAV = [
-  { href: '/admin/dashboard', icon: LayoutDashboard, label: 'Overview' },
-  { href: '/admin/dashboard/procedimientos', icon: List, label: 'Procedimientos' },
-  { href: '/admin/dashboard/configuracion', icon: Settings, label: 'Configuración' },
-  { href: '/admin/dashboard/analytics', icon: BarChart2, label: 'Analytics' },
+  { href: '/superadmin/dashboard', icon: LayoutDashboard, label: 'Overview' },
+  { href: '/superadmin/dashboard/negocios', icon: Building2, label: 'Negocios' },
+  { href: '/superadmin/dashboard/analytics', icon: BarChart2, label: 'Analytics' },
 ]
 
-interface SidebarProps {
-  businessName: string
-  businessSlug: string
-}
-
-export function Sidebar({ businessName, businessSlug }: SidebarProps) {
+export function SuperAdminSidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
 
   async function handleLogout() {
     await supabase.auth.signOut()
-    router.push('/admin/login')
+    router.push('/superadmin/login')
     router.refresh()
   }
 
@@ -36,28 +30,28 @@ export function Sidebar({ businessName, businessSlug }: SidebarProps) {
         borderRight: '1px solid rgba(255,255,255,0.08)',
       }}
     >
-      {/* Logo + negocio */}
+      {/* Logo + badge */}
       <div className="px-6 pt-7 pb-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-        <div className="flex items-baseline gap-0 mb-5">
+        <div className="flex items-baseline gap-0 mb-4">
           <span className="text-2xl font-bold tracking-tight" style={{ color: 'white' }}>glow</span>
           <span className="text-2xl font-bold tracking-tight" style={{ color: '#4A9BB0' }}>sim</span>
         </div>
-        <div className="flex items-center gap-2 mb-1.5">
-          <span
-            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-            style={{ background: '#52C49A', boxShadow: '0 0 8px #52C49A' }}
-          />
-          <span className="text-[10px] uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.45)' }}>
-            Admin activo
-          </span>
-        </div>
-        <p className="text-sm font-semibold text-white truncate">{businessName}</p>
+        <span
+          className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-md font-medium"
+          style={{
+            background: 'rgba(74,155,176,0.25)',
+            color: '#7EC8DC',
+            border: '1px solid rgba(74,155,176,0.3)',
+          }}
+        >
+          Superadmin
+        </span>
       </div>
 
-      {/* Navegación */}
+      {/* Nav */}
       <nav className="flex-1 px-3 py-5 space-y-0.5">
         {NAV.map(({ href, icon: Icon, label }) => {
-          const active = pathname === href
+          const active = pathname === href || (href !== '/superadmin/dashboard' && pathname.startsWith(href))
           return (
             <Link
               key={href}
@@ -84,20 +78,22 @@ export function Sidebar({ businessName, businessSlug }: SidebarProps) {
             </Link>
           )
         })}
+
+        {/* Acceso rápido */}
+        <div className="pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', marginTop: '12px' }}>
+          <Link
+            href="/superadmin/dashboard/negocios/nuevo"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 hover:bg-white/10"
+            style={{ color: 'rgba(255,255,255,0.55)' }}
+          >
+            <Plus className="w-4 h-4" />
+            Nuevo negocio
+          </Link>
+        </div>
       </nav>
 
       {/* Footer */}
-      <div className="px-3 pb-5 pt-3 space-y-0.5" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-        <a
-          href={`https://${businessSlug}.glowsim.app`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors hover:bg-white/10"
-          style={{ color: 'rgba(255,255,255,0.55)' }}
-        >
-          <ExternalLink className="w-4 h-4" />
-          Ver mi página
-        </a>
+      <div className="px-3 pb-5 pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <button
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors hover:bg-white/10"

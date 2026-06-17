@@ -27,22 +27,22 @@ export default async function SuperAdminAnalyticsPage() {
   return (
     <div className="space-y-5 max-w-3xl">
       <div>
-        <h1 className="text-xl font-bold text-white">Analytics Global</h1>
-        <p className="text-zinc-400 text-sm">Simulaciones completas este mes</p>
+        <h1 className="text-xl font-bold" style={{ color: '#0D1E2C' }}>Analytics Global</h1>
+        <p className="text-sm" style={{ color: '#6B8194' }}>Simulaciones completas este mes</p>
       </div>
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+      <div className="rounded-xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #D4E4EE' }}>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-zinc-800">
-              <th className="text-left px-4 py-3 text-zinc-400 font-medium">Negocio</th>
-              <th className="text-right px-4 py-3 text-zinc-400 font-medium">Simulaciones</th>
+            <tr style={{ borderBottom: '1px solid #EBF2F5' }}>
+              <th className="text-left px-4 py-3 font-medium" style={{ color: '#9AAAB8' }}>Negocio</th>
+              <th className="text-right px-4 py-3 font-medium" style={{ color: '#9AAAB8' }}>Simulaciones</th>
             </tr>
           </thead>
           <tbody>
             {ranked.map((biz) => (
-              <tr key={biz.id} className="border-b border-zinc-800 last:border-0">
-                <td className="px-4 py-3 text-white">{biz.name}</td>
-                <td className="px-4 py-3 text-right text-purple-400 font-medium">{biz.sims}</td>
+              <tr key={biz.id} style={{ borderBottom: '1px solid #EBF2F5' }} className="last:border-0">
+                <td className="px-4 py-3" style={{ color: '#0D1E2C' }}>{biz.name}</td>
+                <td className="px-4 py-3 text-right font-medium" style={{ color: '#4A9BB0' }}>{biz.sims}</td>
               </tr>
             ))}
           </tbody>

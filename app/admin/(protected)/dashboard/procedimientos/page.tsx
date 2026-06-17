@@ -34,8 +34,8 @@ export default async function ProcedimientosPage() {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-white">Procedimientos</h1>
-        <p className="text-zinc-400 text-sm">Gestiona los servicios de tu negocio</p>
+        <h1 className="text-xl font-bold" style={{ color: '#0D1E2C' }}>Procedimientos</h1>
+        <p className="text-sm" style={{ color: '#6B8194' }}>Gestiona los servicios de tu negocio</p>
       </div>
       <ProcedureTable procedures={(procedures ?? []) as any} availableZones={zones ?? []} />
     </div>

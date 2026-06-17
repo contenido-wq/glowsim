@@ -47,29 +47,29 @@ export function ProcedureTable({ procedures, availableZones }: ProcedureTablePro
 
   return (
     <div className="space-y-4">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+      <div className="rounded-xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #D4E4EE' }}>
         {procedures.length === 0 ? (
-          <p className="text-zinc-500 text-sm text-center py-10">No hay procedimientos. Agrega el primero.</p>
+          <p className="text-sm text-center py-10" style={{ color: '#9AAAB8' }}>No hay procedimientos. Agrega el primero.</p>
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-zinc-800">
-                <th className="text-left px-4 py-3 text-zinc-400 font-medium">Nombre</th>
-                <th className="text-left px-4 py-3 text-zinc-400 font-medium hidden md:table-cell">Zona</th>
-                <th className="px-4 py-3 text-zinc-400 font-medium">Activo</th>
+              <tr style={{ borderBottom: '1px solid #EBF2F5' }}>
+                <th className="text-left px-4 py-3 font-medium" style={{ color: '#9AAAB8' }}>Nombre</th>
+                <th className="text-left px-4 py-3 font-medium hidden md:table-cell" style={{ color: '#9AAAB8' }}>Zona</th>
+                <th className="px-4 py-3 font-medium" style={{ color: '#9AAAB8' }}>Activo</th>
                 <th className="px-2 py-3" />
               </tr>
             </thead>
             <tbody>
               {procedures.map((proc) => (
-                <tr key={proc.id} className="border-b border-zinc-800 last:border-0">
-                  <td className="px-4 py-3 text-white">{proc.name}</td>
-                  <td className="px-4 py-3 text-zinc-400 hidden md:table-cell">{proc.zone?.name ?? '—'}</td>
+                <tr key={proc.id} style={{ borderBottom: '1px solid #EBF2F5' }} className="last:border-0">
+                  <td className="px-4 py-3" style={{ color: '#0D1E2C' }}>{proc.name}</td>
+                  <td className="px-4 py-3 hidden md:table-cell" style={{ color: '#6B8194' }}>{proc.zone?.name ?? '—'}</td>
                   <td className="px-4 py-3 text-center">
                     <Switch checked={proc.is_active} onCheckedChange={() => handleToggle(proc.id, proc.is_active)} disabled={isPending} />
                   </td>
                   <td className="px-2 py-3 text-center">
-                    <button onClick={() => handleDelete(proc.id)} className="text-zinc-600 hover:text-red-400 transition-colors" disabled={isPending}>
+                    <button onClick={() => handleDelete(proc.id)} className="transition-colors" style={{ color: '#9AAAB8' }} disabled={isPending}>
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </td>
@@ -86,7 +86,7 @@ export function ProcedureTable({ procedures, availableZones }: ProcedureTablePro
       </Button>
 
       {showForm && (
-        <form onSubmit={handleAdd} className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 space-y-4">
+        <form onSubmit={handleAdd} className="rounded-xl p-4 space-y-4" style={{ background: '#FFFFFF', border: '1px solid #D4E4EE' }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="proc-name">Nombre</Label>
@@ -94,7 +94,7 @@ export function ProcedureTable({ procedures, availableZones }: ProcedureTablePro
             </div>
             <div className="space-y-2">
               <Label htmlFor="zone_id">Zona</Label>
-              <select name="zone_id" id="zone_id" className="w-full h-10 bg-zinc-950 border border-zinc-700 rounded-md px-3 text-sm text-white">
+              <select name="zone_id" id="zone_id" className="w-full h-10 rounded-md px-3 text-sm" style={{ background: '#FFFFFF', border: '1px solid #D4E4EE', color: '#0D1E2C' }}>
                 <option value="">Sin zona específica</option>
                 {availableZones.map((z) => (
                   <option key={z.id} value={z.id}>{z.name}</option>
