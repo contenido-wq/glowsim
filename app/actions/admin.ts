@@ -87,9 +87,19 @@ export async function updateBusinessLogo(logoUrl: string) {
   revalidatePath('/admin/dashboard/configuracion')
 }
 
-export async function removeBusinessLogo() {
+export async function removeBusinessLogo(logoPath?: string) {
   const supabase = await createClient()
   const businessId = await getAdminBusinessId()
+
+  if (logoPath) {
+    // Extract just the path portion (remove domain + /storage/v1/object/public/logos/)
+    const url = new URL(logoPath)
+    const pathInBucket = url.pathname.replace(/^\/storage\/v1\/object\/public\/logos\//, '')
+    if (pathInBucket) {
+      await supabase.storage.from('logos').remove([pathInBucket])
+    }
+  }
+
   const { error } = await supabase
     .from('businesses')
     .update({ logo_url: null })

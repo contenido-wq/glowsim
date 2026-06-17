@@ -57,10 +57,10 @@ export function LogoUploader({ businessId, businessName, currentLogoUrl, onLogoC
       const urlWithCache = `${publicUrl}?t=${Date.now()}`
 
       startTransition(async () => {
-        await updateBusinessLogo(urlWithCache)
-        setLogoUrl(urlWithCache)
+        await updateBusinessLogo(publicUrl)        // clean URL — no timestamp in DB
+        setLogoUrl(urlWithCache)                   // cache-busted for immediate UI
         setUploadState('idle')
-        onLogoChange?.(urlWithCache)
+        onLogoChange?.(urlWithCache)               // cache-busted for iframe preview
       })
     } catch (err: unknown) {
       setErrorMsg(err instanceof Error ? err.message : 'Error al subir el logo')
@@ -73,7 +73,7 @@ export function LogoUploader({ businessId, businessName, currentLogoUrl, onLogoC
 
   async function handleRemove() {
     startTransition(async () => {
-      await removeBusinessLogo()
+      await removeBusinessLogo(logoUrl ?? undefined)
       setLogoUrl(null)
       onLogoChange?.(null)
     })

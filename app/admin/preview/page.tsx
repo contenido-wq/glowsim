@@ -7,7 +7,7 @@ import { ProcedureCards } from '@/components/public/ProcedureCards'
 export default async function AdminPreviewPage({
   searchParams,
 }: {
-  searchParams: Record<string, string>
+  searchParams: Promise<Record<string, string>>
 }) {
   let businessId: string
   try {
@@ -32,12 +32,14 @@ export default async function AdminPreviewPage({
     .eq('is_active', true)
     .order('sort_order')
 
+  const params = await searchParams
+
   // URL params override DB values for live preview
-  const name = searchParams.name ?? business.name
-  const tagline = searchParams.tagline ?? business.tagline ?? null
-  const primaryColor = searchParams.primaryColor ?? business.primary_color
-  const logoUrl = searchParams.logoUrl ?? business.logo_url ?? null
-  const city = searchParams.city ?? business.city ?? null
+  const name = params.name ?? business.name
+  const tagline = params.tagline ?? business.tagline ?? null
+  const primaryColor = params.primaryColor ?? business.primary_color
+  const logoUrl = params.logoUrl ?? business.logo_url ?? null
+  const city = params.city ?? business.city ?? null
 
   return (
     <div
