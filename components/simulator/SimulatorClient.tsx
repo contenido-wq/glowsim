@@ -7,6 +7,7 @@ import { PhotoUploader } from './PhotoUploader'
 import { FaceMap } from './FaceMap'
 import { ZonePanel } from './ZonePanel'
 import { WhatsAppCTA } from './WhatsAppCTA'
+import { SimulatorIntro } from './SimulatorIntro'
 import { analyzeImage } from '@/app/actions/analyze'
 import { logEvent } from '@/app/actions/analytics'
 import { getOrCreateSessionId } from '@/lib/session'
@@ -16,21 +17,27 @@ interface SimulatorClientProps {
   businessName: string
   faceMapType: FaceMapType
   primaryColor: string
+  bannerUrl?: string | null
+  tagline?: string | null
+  procedureNames?: string[]
   whatsappNumber: string
   whatsappMessage: string
 }
 
-type Step = 'upload' | 'analyzing' | 'results'
+type Step = 'intro' | 'upload' | 'analyzing' | 'results'
 
 export function SimulatorClient({
   businessId,
   businessName,
   faceMapType,
   primaryColor,
+  bannerUrl,
+  tagline,
+  procedureNames = [],
   whatsappNumber,
   whatsappMessage,
 }: SimulatorClientProps) {
-  const [step, setStep] = useState<Step>('upload')
+  const [step, setStep] = useState<Step>('intro')
   const [photoBase64, setPhotoBase64] = useState('')
   const [result, setResult] = useState<AnalysisResult | null>(null)
   const [activeZoneId, setActiveZoneId] = useState<string | null>(null)
@@ -90,8 +97,26 @@ export function SimulatorClient({
 
   const activeZone = result?.zones.find((z) => z.svg_id === activeZoneId) ?? null
 
+  const whatsappUrl = whatsappNumber
+    ? `https://wa.me/${whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent(
+        whatsappMessage || `Hola, quiero agendar una consulta con ${businessName} 😊`
+      )}`
+    : null
+
   return (
     <div className="flex flex-col min-h-[calc(100vh-57px)]">
+      {step === 'intro' && (
+        <SimulatorIntro
+          businessName={businessName}
+          bannerUrl={bannerUrl ?? null}
+          tagline={tagline ?? null}
+          procedureNames={procedureNames}
+          whatsappUrl={whatsappUrl}
+          onStart={() => setStep('upload')}
+          onWhatsAppClick={handleWhatsAppClick}
+        />
+      )}
+
       {(step === 'upload' || step === 'analyzing') && (
         <div className="flex-1 flex flex-col items-center justify-center">
           {error && <p className="text-red-400 text-sm text-center px-6 mb-4">{error}</p>}

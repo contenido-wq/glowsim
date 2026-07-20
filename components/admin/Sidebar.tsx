@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { LayoutDashboard, Settings, List, BarChart2, LogOut, ExternalLink } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { getPublicUrl } from '@/lib/tenant'
 
 const NAV = [
   { href: '/admin/dashboard', icon: LayoutDashboard, label: 'Overview' },
@@ -15,12 +16,14 @@ const NAV = [
 interface SidebarProps {
   businessName: string
   businessSlug: string
+  customDomain?: string | null
 }
 
-export function Sidebar({ businessName, businessSlug }: SidebarProps) {
+export function Sidebar({ businessName, businessSlug, customDomain }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
+  const publicUrl = getPublicUrl({ slug: businessSlug, custom_domain: customDomain })
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -32,8 +35,8 @@ export function Sidebar({ businessName, businessSlug }: SidebarProps) {
     <aside
       className="w-64 min-h-screen flex flex-col"
       style={{
-        background: '#1B3A5C',
-        borderRight: '1px solid rgba(255,255,255,0.08)',
+        background: 'linear-gradient(180deg, #16233a 0%, #111a2c 100%)',
+        borderRight: '1px solid rgba(255,255,255,0.06)',
       }}
     >
       {/* Logo + negocio */}
@@ -89,7 +92,7 @@ export function Sidebar({ businessName, businessSlug }: SidebarProps) {
       {/* Footer */}
       <div className="px-3 pb-5 pt-3 space-y-0.5" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
         <a
-          href={`https://${businessSlug}.glowsim.app`}
+          href={publicUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors hover:bg-white/10"

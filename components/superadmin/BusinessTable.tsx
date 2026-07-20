@@ -3,11 +3,13 @@
 import { useTransition } from 'react'
 import { ExternalLink } from 'lucide-react'
 import { toggleBusinessActive } from '@/app/actions/superadmin'
+import { getPublicUrl } from '@/lib/tenant'
 
 interface Business {
   id: string
   name: string
   slug: string
+  custom_domain?: string | null
   is_active: boolean
   created_at: string
   business_types: { name: string } | null
@@ -24,9 +26,9 @@ export function BusinessTable({ businesses }: { businesses: Business[] }) {
     return (
       <div
         className="rounded-2xl p-12 text-center"
-        style={{ background: '#FFFFFF', border: '1px solid #DCE8EE' }}
+        style={{ background: '#171721', border: '1px solid rgba(255,255,255,0.08)' }}
       >
-        <p className="text-sm" style={{ color: '#9AAAB8' }}>
+        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
           No hay negocios registrados aún.
         </p>
       </div>
@@ -36,16 +38,16 @@ export function BusinessTable({ businesses }: { businesses: Business[] }) {
   return (
     <div
       className="rounded-2xl overflow-hidden"
-      style={{ background: '#FFFFFF', border: '1px solid #DCE8EE' }}
+      style={{ background: '#171721', border: '1px solid rgba(255,255,255,0.08)' }}
     >
       <table className="w-full text-sm">
         <thead>
-          <tr style={{ borderBottom: '1px solid #EBF0F5' }}>
+          <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
             {['Negocio', 'Tipo', 'URL', 'Estado'].map((h) => (
               <th
                 key={h}
                 className="text-left px-5 py-4 font-medium"
-                style={{ color: '#9AAAB8', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.08em' }}
+                style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.08em' }}
               >
                 {h}
               </th>
@@ -56,12 +58,12 @@ export function BusinessTable({ businesses }: { businesses: Business[] }) {
           {businesses.map((biz) => (
             <tr
               key={biz.id}
-              style={{ borderBottom: '1px solid #EBF0F5' }}
-              className="last:border-0 transition-colors hover:bg-[#F5F8FA]"
+              style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+              className="last:border-0 transition-colors hover:bg-white/[0.03]"
             >
               <td className="px-5 py-4">
-                <div className="font-semibold" style={{ color: '#1A2B3C' }}>{biz.name}</div>
-                <div className="text-xs font-mono mt-0.5" style={{ color: '#9AAAB8' }}>
+                <div className="font-semibold text-white">{biz.name}</div>
+                <div className="text-xs font-mono mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>
                   {biz.slug}
                 </div>
               </td>
@@ -69,8 +71,8 @@ export function BusinessTable({ businesses }: { businesses: Business[] }) {
                 <span
                   className="text-xs px-2.5 py-1 rounded-lg font-medium"
                   style={{
-                    background: '#EBF0F5',
-                    color: '#5A7080',
+                    background: 'rgba(255,255,255,0.06)',
+                    color: 'rgba(255,255,255,0.7)',
                   }}
                 >
                   {biz.business_types?.name ?? '—'}
@@ -78,13 +80,13 @@ export function BusinessTable({ businesses }: { businesses: Business[] }) {
               </td>
               <td className="px-5 py-4 hidden lg:table-cell">
                 <a
-                  href={`https://${biz.slug}.glowsim.app`}
+                  href={getPublicUrl(biz)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-xs transition-colors hover:text-[#1B72D9]"
-                  style={{ color: '#9AAAB8' }}
+                  className="flex items-center gap-1.5 text-xs transition-colors hover:text-[#5AA9E6]"
+                  style={{ color: 'rgba(255,255,255,0.4)' }}
                 >
-                  {biz.slug}.glowsim.app
+                  {getPublicUrl(biz).replace(/^https?:\/\//, '')}
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </td>

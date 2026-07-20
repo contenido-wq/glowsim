@@ -1,81 +1,71 @@
 import type { MetricsSummary } from '@/types'
+import { getPublicUrl } from '@/lib/tenant'
 
 interface MetricsCardsProps {
   metrics: MetricsSummary
   businessSlug: string
+  customDomain?: string | null
 }
 
-export function MetricsCards({ metrics, businessSlug }: MetricsCardsProps) {
+export function MetricsCards({ metrics, businessSlug, customDomain }: MetricsCardsProps) {
+  const publicUrl = getPublicUrl({ slug: businessSlug, custom_domain: customDomain })
+  const publicLabel = publicUrl.replace(/^https?:\/\//, '')
   const convRate =
     metrics.visits > 0
       ? ((metrics.simulation_completes / metrics.visits) * 100).toFixed(1)
       : '0.0'
 
-  const cards = [
-    {
-      label: 'Visitas',
-      value: metrics.visits,
-      sub: 'este mes',
-      accent: '#1B72D9',
-      glow: false,
-    },
-    {
-      label: 'Simulaciones',
-      value: metrics.simulation_completes,
-      sub: 'completadas',
-      accent: '#4A9BB0',
-      glow: false,
-    },
-    {
-      label: 'Clics WhatsApp',
-      value: metrics.whatsapp_clicks,
-      sub: 'consultas generadas',
-      accent: '#22C55E',
-      glow: false,
-    },
-    {
-      label: 'Conversión',
-      value: `${convRate}%`,
-      sub: 'visita → simulación',
-      accent: '#E07B5A',
-      glow: true,
-    },
+  const darkCards = [
+    { label: 'Visitas', value: metrics.visits, sub: 'este mes', accent: '#5AA9E6' },
+    { label: 'Simulaciones', value: metrics.simulation_completes, sub: 'completadas', accent: '#7EC8DC' },
+    { label: 'Conversión', value: `${convRate}%`, sub: 'visita → simulación', accent: '#E0A05A' },
   ]
 
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {cards.map((card) => (
+        {/* Hero gradient card */}
+        <div
+          className="col-span-2 rounded-2xl p-5 relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, #1B72D9 0%, #4A9BB0 100%)' }}
+        >
+          <div
+            className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl pointer-events-none"
+            style={{ background: '#FFFFFF', opacity: 0.15 }}
+          />
+          <p className="text-[10px] uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+            Clics WhatsApp
+          </p>
+          <p className="text-3xl font-bold tabular-nums leading-none text-white">
+            {metrics.whatsapp_clicks}
+          </p>
+          <p className="text-xs mt-2" style={{ color: 'rgba(255,255,255,0.75)' }}>
+            consultas generadas este mes
+          </p>
+        </div>
+
+        {darkCards.map((card) => (
           <div
             key={card.label}
             className="rounded-2xl p-5 relative overflow-hidden"
             style={{
-              background: '#FFFFFF',
-              border: '1px solid #DCE8EE',
+              background: '#171721',
+              border: '1px solid rgba(255,255,255,0.08)',
             }}
           >
-            {card.glow && (
-              <div
-                className="absolute -top-6 -right-6 w-28 h-28 rounded-full blur-2xl pointer-events-none"
-                style={{ background: card.accent, opacity: 0.12 }}
-              />
-            )}
             <p
               className="text-[10px] uppercase tracking-widest mb-3"
-              style={{ color: '#9AAAB8' }}
+              style={{ color: 'rgba(255,255,255,0.4)' }}
             >
               {card.label}
             </p>
             <p
               className="text-3xl font-bold tabular-nums leading-none"
-              style={{
-                color: card.accent,
-                textShadow: card.glow ? `0 0 24px ${card.accent}70` : undefined,
-              }}
+              style={{ color: card.accent }}
             >
               {card.value}
             </p>
-            <p className="text-xs mt-2" style={{ color: '#9AAAB8' }}>
+            <p className="text-xs mt-2" style={{ color: 'rgba(255,255,255,0.4)' }}>
               {card.sub}
             </p>
           </div>
@@ -86,18 +76,18 @@ export function MetricsCards({ metrics, businessSlug }: MetricsCardsProps) {
       <div
         className="rounded-2xl p-4 flex items-center justify-between"
         style={{
-          background: '#FFFFFF',
-          border: '1px solid #DCE8EE',
+          background: '#171721',
+          border: '1px solid rgba(255,255,255,0.08)',
         }}
       >
         <div>
-          <p className="text-[10px] uppercase tracking-widest mb-1" style={{ color: '#9AAAB8' }}>
+          <p className="text-[10px] uppercase tracking-widest mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>
             Tu página pública
           </p>
-          <p className="text-sm font-mono" style={{ color: '#1A2B3C' }}>{businessSlug}.glowsim.app</p>
+          <p className="text-sm font-mono text-white">{publicLabel}</p>
         </div>
         <a
-          href={`https://${businessSlug}.glowsim.app`}
+          href={publicUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs px-4 py-2 rounded-xl font-medium transition-all"

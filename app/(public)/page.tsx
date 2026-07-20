@@ -50,6 +50,15 @@ export default async function PublicPage({
         tagline={business.tagline}
         primaryColor={business.primary_color}
         logoUrl={business.logo_url}
+        bannerUrl={business.banner_url}
+        whatsappNumber={business.whatsapp_number}
+        whatsappMessage={business.whatsapp_message}
+        instagramUrl={business.instagram_url}
+        tiktokUrl={business.tiktok_url}
+        facebookUrl={business.facebook_url}
+        websiteUrl={business.website_url}
+        mapsUrl={business.maps_url}
+        hasProcedures={(procedures ?? []).length > 0}
       />
       <ProcedureCards procedures={procedures ?? []} primaryColor={business.primary_color} />
       <footer className="text-center py-8 text-xs text-zinc-700">

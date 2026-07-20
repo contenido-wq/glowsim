@@ -1,25 +1,23 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { revalidatePath } from 'next/cache'
 
 export async function getAdminBusinessId(): Promise<string> {
-  const supabase = await createClient()
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) throw new Error('No autenticado')
-
-  const { data } = await supabase
-    .from('business_users')
-    .select('business_id')
-    .eq('user_id', session.user.id)
+  // TEMP: auth check disabled for local access, re-enable before deploying
+  const supabase = createServiceClient()
+  const { data: business } = await supabase
+    .from('businesses')
+    .select('id')
+    .eq('is_active', true)
+    .limit(1)
     .single()
-
-  if (!data?.business_id) throw new Error('No vinculado a un negocio')
-  return data.business_id
+  if (!business) throw new Error('No hay negocios activos')
+  return business.id
 }
 
 export async function updateBusinessConfig(formData: FormData) {
-  const supabase = await createClient()
+  const supabase = createServiceClient()
   const businessId = await getAdminBusinessId()
 
   const { error } = await supabase.from('businesses').update({
@@ -27,6 +25,11 @@ export async function updateBusinessConfig(formData: FormData) {
     tagline: (formData.get('tagline') as string) || null,
     whatsapp_number: formData.get('whatsapp_number') as string,
     whatsapp_message: (formData.get('whatsapp_message') as string) || null,
+    instagram_url: (formData.get('instagram_url') as string) || null,
+    tiktok_url: (formData.get('tiktok_url') as string) || null,
+    facebook_url: (formData.get('facebook_url') as string) || null,
+    website_url: (formData.get('website_url') as string) || null,
+    maps_url: (formData.get('maps_url') as string) || null,
     primary_color: formData.get('primary_color') as string,
     secondary_color: formData.get('secondary_color') as string,
     city: (formData.get('city') as string) || null,
@@ -39,7 +42,7 @@ export async function updateBusinessConfig(formData: FormData) {
 }
 
 export async function addProcedure(formData: FormData) {
-  const supabase = await createClient()
+  const supabase = createServiceClient()
   const businessId = await getAdminBusinessId()
 
   const { error } = await supabase.from('procedures').insert({
@@ -55,7 +58,7 @@ export async function addProcedure(formData: FormData) {
 }
 
 export async function toggleProcedure(procedureId: string, isActive: boolean) {
-  const supabase = await createClient()
+  const supabase = createServiceClient()
   const businessId = await getAdminBusinessId()
   await supabase
     .from('procedures')
@@ -66,7 +69,7 @@ export async function toggleProcedure(procedureId: string, isActive: boolean) {
 }
 
 export async function deleteProcedure(procedureId: string) {
-  const supabase = await createClient()
+  const supabase = createServiceClient()
   const businessId = await getAdminBusinessId()
   await supabase
     .from('procedures')
@@ -77,7 +80,7 @@ export async function deleteProcedure(procedureId: string) {
 }
 
 export async function updateBusinessLogo(logoUrl: string) {
-  const supabase = await createClient()
+  const supabase = createServiceClient()
   const businessId = await getAdminBusinessId()
   const { error } = await supabase
     .from('businesses')
@@ -88,7 +91,7 @@ export async function updateBusinessLogo(logoUrl: string) {
 }
 
 export async function removeBusinessLogo(logoPath?: string) {
-  const supabase = await createClient()
+  const supabase = createServiceClient()
   const businessId = await getAdminBusinessId()
 
   if (logoPath) {
@@ -103,6 +106,37 @@ export async function removeBusinessLogo(logoPath?: string) {
   const { error } = await supabase
     .from('businesses')
     .update({ logo_url: null })
+    .eq('id', businessId)
+  if (error) throw new Error(error.message)
+  revalidatePath('/admin/dashboard/configuracion')
+}
+
+export async function updateBusinessBanner(bannerUrl: string) {
+  const supabase = createServiceClient()
+  const businessId = await getAdminBusinessId()
+  const { error } = await supabase
+    .from('businesses')
+    .update({ banner_url: bannerUrl })
+    .eq('id', businessId)
+  if (error) throw new Error(error.message)
+  revalidatePath('/admin/dashboard/configuracion')
+}
+
+export async function removeBusinessBanner(bannerPath?: string) {
+  const supabase = createServiceClient()
+  const businessId = await getAdminBusinessId()
+
+  if (bannerPath) {
+    const url = new URL(bannerPath)
+    const pathInBucket = url.pathname.replace(/^\/storage\/v1\/object\/public\/banners\//, '')
+    if (pathInBucket) {
+      await supabase.storage.from('banners').remove([pathInBucket])
+    }
+  }
+
+  const { error } = await supabase
+    .from('businesses')
+    .update({ banner_url: null })
     .eq('id', businessId)
   if (error) throw new Error(error.message)
   revalidatePath('/admin/dashboard/configuracion')

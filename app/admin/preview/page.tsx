@@ -39,6 +39,7 @@ export default async function AdminPreviewPage({
   const tagline = params.tagline ?? business.tagline ?? null
   const primaryColor = params.primaryColor ?? business.primary_color
   const logoUrl = params.logoUrl ?? business.logo_url ?? null
+  const bannerUrl = params.bannerUrl ?? business.banner_url ?? null
   const city = params.city ?? business.city ?? null
 
   return (
@@ -56,6 +57,15 @@ export default async function AdminPreviewPage({
         tagline={tagline}
         primaryColor={primaryColor}
         logoUrl={logoUrl}
+        bannerUrl={bannerUrl}
+        whatsappNumber={business.whatsapp_number}
+        whatsappMessage={business.whatsapp_message}
+        instagramUrl={business.instagram_url}
+        tiktokUrl={business.tiktok_url}
+        facebookUrl={business.facebook_url}
+        websiteUrl={business.website_url}
+        mapsUrl={business.maps_url}
+        hasProcedures={(procedures ?? []).length > 0}
       />
       <ProcedureCards procedures={procedures ?? []} primaryColor={primaryColor} />
       <footer className="text-center py-8 text-xs text-zinc-700">

@@ -16,11 +16,17 @@ export interface Business {
   slug: string
   custom_domain?: string | null
   logo_url?: string | null
+  banner_url?: string | null
   primary_color: string
   secondary_color: string
   tagline?: string | null
   whatsapp_number: string
   whatsapp_message?: string | null
+  instagram_url?: string | null
+  tiktok_url?: string | null
+  facebook_url?: string | null
+  website_url?: string | null
+  maps_url?: string | null
   city?: string | null
   country?: string | null
   is_active: boolean

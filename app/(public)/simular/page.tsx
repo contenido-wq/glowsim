@@ -20,6 +20,13 @@ export default async function SimularPage() {
 
   const faceMapType = (business.business_types as any)?.face_map_type ?? 'face'
 
+  const { data: procedures } = await supabase
+    .from('procedures')
+    .select('id, name')
+    .eq('business_id', businessId)
+    .eq('is_active', true)
+    .order('sort_order')
+
   return (
     <main className="min-h-screen bg-zinc-950">
       <div className="sticky top-0 z-10 bg-zinc-950/80 backdrop-blur border-b border-zinc-900 px-4 py-3 flex items-center gap-3">
@@ -32,6 +39,9 @@ export default async function SimularPage() {
           businessName={business.name}
           faceMapType={faceMapType}
           primaryColor={business.primary_color}
+          bannerUrl={business.banner_url}
+          tagline={business.tagline}
+          procedureNames={(procedures ?? []).map((p) => p.name)}
           whatsappNumber={business.whatsapp_number}
           whatsappMessage={business.whatsapp_message ?? ''}
         />

@@ -2,19 +2,19 @@
 
 import { useRef, useState, useTransition } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { updateBusinessLogo, removeBusinessLogo } from '@/app/actions/admin'
+import { updateBusinessBanner, removeBusinessBanner } from '@/app/actions/admin'
+import { compressImageFile } from '@/lib/imageCompression'
 
-interface LogoUploaderProps {
+interface BannerUploaderProps {
   businessId: string
-  businessName: string
-  currentLogoUrl: string | null
-  onLogoChange?: (url: string | null) => void
+  currentBannerUrl: string | null
+  onBannerChange?: (url: string | null) => void
 }
 
-type UploadState = 'idle' | 'uploading' | 'error'
+type UploadState = 'idle' | 'compressing' | 'uploading' | 'error'
 
-export function LogoUploader({ businessId, businessName, currentLogoUrl, onLogoChange }: LogoUploaderProps) {
-  const [logoUrl, setLogoUrl] = useState(currentLogoUrl)
+export function BannerUploader({ businessId, currentBannerUrl, onBannerChange }: BannerUploaderProps) {
+  const [bannerUrl, setBannerUrl] = useState(currentBannerUrl)
   const [uploadState, setUploadState] = useState<UploadState>('idle')
   const [errorMsg, setErrorMsg] = useState('')
   const [isPending, startTransition] = useTransition()
@@ -29,97 +29,89 @@ export function LogoUploader({ businessId, businessName, currentLogoUrl, onLogoC
       setUploadState('error')
       return
     }
-    if (file.size > 2 * 1024 * 1024) {
-      setErrorMsg('El logo debe pesar menos de 2MB')
+    if (file.size > 15 * 1024 * 1024) {
+      setErrorMsg('La imagen debe pesar menos de 15MB')
       setUploadState('error')
       return
     }
 
-    setUploadState('uploading')
     setErrorMsg('')
 
     try {
-      const ext = file.name.split('.').pop() ?? 'png'
-      const path = `${businessId}/logo.${ext}`
+      setUploadState('compressing')
+      const compressed = await compressImageFile(file, { maxWidth: 1600, quality: 0.8 })
+
+      setUploadState('uploading')
+      const path = `${businessId}/banner.jpg`
       const supabase = createClient()
 
       const { data, error } = await supabase.storage
-        .from('logos')
-        .upload(path, file, { upsert: true })
+        .from('banners')
+        .upload(path, compressed, { upsert: true, contentType: 'image/jpeg' })
 
       if (error) throw error
 
       const { data: { publicUrl } } = supabase.storage
-        .from('logos')
+        .from('banners')
         .getPublicUrl(data.path)
 
-      // Bust cache by appending timestamp
       const urlWithCache = `${publicUrl}?t=${Date.now()}`
 
       startTransition(async () => {
-        await updateBusinessLogo(publicUrl)        // clean URL — no timestamp in DB
-        setLogoUrl(urlWithCache)                   // cache-busted for immediate UI
+        await updateBusinessBanner(publicUrl)
+        setBannerUrl(urlWithCache)
         setUploadState('idle')
-        onLogoChange?.(urlWithCache)               // cache-busted for iframe preview
+        onBannerChange?.(urlWithCache)
       })
     } catch (err: unknown) {
-      setErrorMsg(err instanceof Error ? err.message : 'Error al subir el logo')
+      setErrorMsg(err instanceof Error ? err.message : 'Error al subir el banner')
       setUploadState('error')
     }
 
-    // Reset input so the same file can be re-selected
     e.target.value = ''
   }
 
   async function handleRemove() {
     startTransition(async () => {
-      await removeBusinessLogo(logoUrl ?? undefined)
-      setLogoUrl(null)
-      onLogoChange?.(null)
+      await removeBusinessBanner(bannerUrl ?? undefined)
+      setBannerUrl(null)
+      onBannerChange?.(null)
     })
   }
 
-  const isLoading = uploadState === 'uploading' || isPending
+  const isLoading = uploadState === 'compressing' || uploadState === 'uploading' || isPending
 
   return (
-    <div className="flex items-center gap-4">
-      {/* Circle zone */}
+    <div className="space-y-2">
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={isLoading}
-        className="relative w-20 h-20 rounded-full overflow-hidden flex-shrink-0 transition-all focus:outline-none focus-visible:ring-2"
+        className="relative w-full aspect-[16/9] rounded-xl overflow-hidden transition-all focus:outline-none focus-visible:ring-2"
         style={{
           border: uploadState === 'error'
             ? '2px solid #ef4444'
-            : uploadState === 'uploading'
-            ? '2px solid #4A9BB0'
-            : logoUrl
+            : bannerUrl
             ? '2px solid rgba(255,255,255,0.15)'
             : '2px dashed rgba(255,255,255,0.2)',
-          animation: uploadState === 'uploading' ? 'logo-pulse 1.2s ease-in-out infinite' : 'none',
+          background: 'rgba(255,255,255,0.04)',
         }}
       >
-        {logoUrl ? (
+        {bannerUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={logoUrl} alt="Logo" className="w-full h-full object-cover" />
+          <img src={bannerUrl} alt="Banner" className="w-full h-full object-cover" />
         ) : (
-          <div
-            className="w-full h-full flex items-center justify-center text-2xl font-bold text-white"
-            style={{ backgroundColor: '#6B8194' }}
-          >
-            {businessName[0]?.toUpperCase() ?? '?'}
+          <div className="w-full h-full flex items-center justify-center text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            Subir banner
           </div>
         )}
 
-        {/* Hover overlay */}
         {!isLoading && (
           <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
             <span className="text-white text-xs font-medium">Cambiar</span>
           </div>
         )}
 
-        {/* Uploading spinner */}
         {isLoading && (
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
             <div
@@ -138,7 +130,7 @@ export function LogoUploader({ businessId, businessName, currentLogoUrl, onLogoC
         onChange={handleFileChange}
       />
 
-      <div className="flex flex-col gap-1">
+      <div className="flex items-center justify-between">
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
@@ -146,9 +138,9 @@ export function LogoUploader({ businessId, businessName, currentLogoUrl, onLogoC
           className="text-sm font-medium disabled:opacity-50"
           style={{ color: '#7EC8DC' }}
         >
-          {logoUrl ? 'Cambiar logo' : 'Subir logo'}
+          {bannerUrl ? 'Cambiar banner' : 'Subir banner'}
         </button>
-        {logoUrl && !isLoading && (
+        {bannerUrl && !isLoading && (
           <button
             type="button"
             onClick={handleRemove}
@@ -158,18 +150,13 @@ export function LogoUploader({ businessId, businessName, currentLogoUrl, onLogoC
             Eliminar
           </button>
         )}
-        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>PNG, JPG · Máx 2MB</p>
-        {uploadState === 'error' && (
-          <p className="text-xs text-red-400">{errorMsg}</p>
-        )}
       </div>
-
-      <style>{`
-        @keyframes logo-pulse {
-          0%, 100% { border-color: rgba(255,255,255,0.15); }
-          50% { border-color: #4A9BB0; }
-        }
-      `}</style>
+      <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+        JPG, PNG · Se optimiza automáticamente al subir
+      </p>
+      {uploadState === 'error' && (
+        <p className="text-xs text-red-400">{errorMsg}</p>
+      )}
     </div>
   )
 }
