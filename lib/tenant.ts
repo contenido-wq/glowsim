@@ -25,3 +25,13 @@ export function extractTenantIdentifier(
 
   return { type: 'custom_domain', value: cleanHost }
 }
+
+export function getPublicUrl(business: { slug: string; custom_domain?: string | null }): string {
+  if (business.custom_domain) return `https://${business.custom_domain}`
+
+  const appDomain = process.env.NEXT_PUBLIC_APP_DOMAIN ?? 'glowsim.app'
+  if (appDomain === 'localhost') {
+    return `http://${business.slug}.localhost:3000`
+  }
+  return `https://${business.slug}.${appDomain}`
+}
