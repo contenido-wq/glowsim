@@ -26,8 +26,8 @@ export function SuperAdminSidebar() {
     <aside
       className="w-64 min-h-screen flex flex-col"
       style={{
-        background: '#1B3A5C',
-        borderRight: '1px solid rgba(255,255,255,0.08)',
+        background: 'linear-gradient(180deg, #16233a 0%, #111a2c 100%)',
+        borderRight: '1px solid rgba(255,255,255,0.06)',
       }}
     >
       {/* Logo + badge */}

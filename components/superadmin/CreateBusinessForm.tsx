@@ -10,11 +10,11 @@ interface BusinessType { id: string; name: string }
 function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2">
-      <label className="block text-[10px] uppercase tracking-widest font-medium" style={{ color: '#9AAAB8' }}>
+      <label className="block text-[10px] uppercase tracking-widest font-medium" style={{ color: 'rgba(255,255,255,0.4)' }}>
         {label}
       </label>
       {children}
-      {hint && <p className="text-xs" style={{ color: '#9AAAB8' }}>{hint}</p>}
+      {hint && <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{hint}</p>}
     </div>
   )
 }
@@ -22,12 +22,12 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 const inputStyle: React.CSSProperties = {
   width: '100%',
   height: '44px',
-  background: '#FFFFFF',
-  border: '1px solid #D4E4EE',
+  background: 'rgba(255,255,255,0.05)',
+  border: '1px solid rgba(255,255,255,0.15)',
   borderRadius: '12px',
   padding: '0 14px',
   fontSize: '14px',
-  color: '#0D1E2C',
+  color: '#FFFFFF',
   outline: 'none',
   transition: 'border-color 0.15s',
 }
@@ -55,7 +55,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
   return (
     <div
       className="rounded-2xl p-6"
-      style={{ background: '#FFFFFF', border: '1px solid #D4E4EE' }}
+      style={{ background: '#171721', border: '1px solid rgba(255,255,255,0.08)' }}
     >
       <form onSubmit={handleSubmit} className="space-y-5">
 
@@ -65,8 +65,8 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             required
             placeholder="Clínica Belleza Total"
             style={inputStyle}
-            onFocus={e => (e.target.style.borderColor = '#1B72D9')}
-            onBlur={e => (e.target.style.borderColor = '#D4E4EE')}
+            onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+            onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
           />
         </Field>
 
@@ -77,15 +77,15 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
               required
               placeholder="belleza-total"
               style={{ ...inputStyle, fontFamily: 'monospace' }}
-              onFocus={e => (e.target.style.borderColor = '#1B72D9')}
-              onBlur={e => (e.target.style.borderColor = '#D4E4EE')}
+              onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+              onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
             />
             <span
               className="text-xs whitespace-nowrap px-3 py-2 rounded-xl"
               style={{
-                background: '#F0F5F8',
-                color: '#9AAAB8',
-                border: '1px solid #D4E4EE',
+                background: 'rgba(255,255,255,0.05)',
+                color: 'rgba(255,255,255,0.4)',
+                border: '1px solid rgba(255,255,255,0.15)',
               }}
             >
               .glowsim.app
@@ -98,12 +98,12 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             name="business_type_id"
             required
             style={{ ...inputStyle, cursor: 'pointer' }}
-            onFocus={e => (e.target.style.borderColor = '#1B72D9')}
-            onBlur={e => (e.target.style.borderColor = '#D4E4EE')}
+            onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+            onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
           >
-            <option value="">Selecciona un tipo</option>
+            <option value="" className="bg-[#171721]">Selecciona un tipo</option>
             {businessTypes.map((t) => (
-              <option key={t.id} value={t.id}>{t.name}</option>
+              <option key={t.id} value={t.id} className="bg-[#171721]">{t.name}</option>
             ))}
           </select>
         </Field>
@@ -114,8 +114,8 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             required
             placeholder="+573001234567"
             style={inputStyle}
-            onFocus={e => (e.target.style.borderColor = '#1B72D9')}
-            onBlur={e => (e.target.style.borderColor = '#D4E4EE')}
+            onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+            onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
           />
         </Field>
 
@@ -125,14 +125,14 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             required
             placeholder="Dra. Jessica García"
             style={inputStyle}
-            onFocus={e => (e.target.style.borderColor = '#1B72D9')}
-            onBlur={e => (e.target.style.borderColor = '#D4E4EE')}
+            onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+            onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
           />
         </Field>
 
         {/* Método de acceso */}
         <div className="space-y-3">
-          <span className="block text-[10px] uppercase tracking-widest font-medium" style={{ color: '#9AAAB8' }}>
+          <span className="block text-[10px] uppercase tracking-widest font-medium" style={{ color: 'rgba(255,255,255,0.4)' }}>
             Método de acceso
           </span>
           <div className="flex flex-col gap-2">
@@ -153,7 +153,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
                   className="accent-blue-600"
                   style={{ width: '16px', height: '16px', cursor: 'pointer' }}
                 />
-                <span className="text-sm" style={{ color: '#0D1E2C' }}>{label}</span>
+                <span className="text-sm text-white">{label}</span>
               </label>
             ))}
           </div>
@@ -169,8 +169,8 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             required
             placeholder="admin@tuclinica.com"
             style={inputStyle}
-            onFocus={e => (e.target.style.borderColor = '#1B72D9')}
-            onBlur={e => (e.target.style.borderColor = '#D4E4EE')}
+            onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+            onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
           />
         </Field>
 
@@ -184,14 +184,14 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
                 minLength={8}
                 placeholder="••••••••"
                 style={{ ...inputStyle, paddingRight: '44px' }}
-                onFocus={e => (e.target.style.borderColor = '#1B72D9')}
-                onBlur={e => (e.target.style.borderColor = '#D4E4EE')}
+                onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+                onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(v => !v)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors"
-                style={{ color: '#9AAAB8', background: 'none', border: 'none', cursor: 'pointer', lineHeight: 0 }}
+                style={{ color: 'rgba(255,255,255,0.4)', background: 'none', border: 'none', cursor: 'pointer', lineHeight: 0 }}
               >
                 {showPassword ? (
                   <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
@@ -210,7 +210,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
           style={{
             height: '48px',
             borderRadius: '14px',
-            background: isPending ? 'rgba(27,114,217,0.5)' : '#1B72D9',
+            background: isPending ? 'rgba(27,114,217,0.5)' : 'linear-gradient(135deg, #1B72D9 0%, #4A9BB0 100%)',
             color: '#fff',
             border: 'none',
             cursor: isPending ? 'not-allowed' : 'pointer',

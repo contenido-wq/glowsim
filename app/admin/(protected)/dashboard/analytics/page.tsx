@@ -53,29 +53,29 @@ export default async function AnalyticsPage() {
   return (
     <div className="p-6 space-y-6">
       <div>
-        <h1 className="text-xl font-bold" style={{ color: '#0D1E2C' }}>Analytics</h1>
-        <p className="text-sm" style={{ color: '#6B8194' }}>Últimos 30 días</p>
+        <h1 className="text-xl font-bold text-white">Analytics</h1>
+        <p className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>Últimos 30 días</p>
       </div>
       <AnalyticsChart data={chartData} />
-      <div className="rounded-xl overflow-hidden" style={{ background: '#FFFFFF', border: '1px solid #D4E4EE' }}>
-        <div className="px-4 py-3" style={{ borderBottom: '1px solid #EBF2F5' }}>
-          <h3 className="text-sm font-medium" style={{ color: '#0D1E2C' }}>Fuentes de tráfico</h3>
+      <div className="rounded-xl overflow-hidden" style={{ background: '#171721', border: '1px solid rgba(255,255,255,0.08)' }}>
+        <div className="px-4 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+          <h3 className="text-sm font-medium text-white">Fuentes de tráfico</h3>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ borderBottom: '1px solid #EBF2F5' }}>
-              <th className="text-left px-4 py-2 font-medium" style={{ color: '#9AAAB8' }}>Fuente</th>
-              <th className="text-right px-4 py-2 font-medium" style={{ color: '#9AAAB8' }}>Visitas</th>
+            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+              <th className="text-left px-4 py-2 font-medium" style={{ color: 'rgba(255,255,255,0.4)' }}>Fuente</th>
+              <th className="text-right px-4 py-2 font-medium" style={{ color: 'rgba(255,255,255,0.4)' }}>Visitas</th>
             </tr>
           </thead>
           <tbody>
             {sources.length === 0 ? (
-              <tr><td colSpan={2} className="px-4 py-6 text-center text-xs" style={{ color: '#9AAAB8' }}>Sin datos aún</td></tr>
+              <tr><td colSpan={2} className="px-4 py-6 text-center text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Sin datos aún</td></tr>
             ) : (
               sources.map(({ source, count }) => (
-                <tr key={source} style={{ borderBottom: '1px solid #EBF2F5' }} className="last:border-0">
-                  <td className="px-4 py-2" style={{ color: '#6B8194' }}>{source}</td>
-                  <td className="px-4 py-2 text-right font-medium" style={{ color: '#1B72D9' }}>{count}</td>
+                <tr key={source} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }} className="last:border-0">
+                  <td className="px-4 py-2" style={{ color: 'rgba(255,255,255,0.55)' }}>{source}</td>
+                  <td className="px-4 py-2 text-right font-medium" style={{ color: '#5AA9E6' }}>{count}</td>
                 </tr>
               ))
             )}

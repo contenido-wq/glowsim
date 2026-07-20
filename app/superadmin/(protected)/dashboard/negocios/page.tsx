@@ -13,11 +13,11 @@ export default async function NegociosPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color: '#9AAAB8' }}>
+          <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color: 'rgba(255,255,255,0.4)' }}>
             Plataforma
           </p>
-          <h1 className="text-2xl font-bold" style={{ color: '#0D1E2C' }}>Negocios</h1>
-          <p className="text-sm mt-1" style={{ color: '#6B8194' }}>
+          <h1 className="text-2xl font-bold text-white">Negocios</h1>
+          <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.55)' }}>
             {businesses.length} registrados · {activeCount} activos
           </p>
         </div>
@@ -25,7 +25,7 @@ export default async function NegociosPage() {
           <Button
             className="gap-2 text-sm font-medium"
             style={{
-              background: '#1B72D9',
+              background: 'linear-gradient(135deg, #1B72D9 0%, #4A9BB0 100%)',
               color: '#fff',
               border: 'none',
               boxShadow: '0 4px 14px rgba(27,114,217,0.3)',
