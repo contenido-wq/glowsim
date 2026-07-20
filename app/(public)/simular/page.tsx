@@ -39,9 +39,16 @@ export default async function SimularPage() {
           businessName={business.name}
           faceMapType={faceMapType}
           primaryColor={business.primary_color}
-          bannerUrl={business.banner_url}
+          bannerUrl={business.simulator_banner_url ?? business.banner_url}
           tagline={business.tagline}
           procedureNames={(procedures ?? []).map((p) => p.name)}
+          headline1={business.simulator_headline_1}
+          headline2={business.simulator_headline_2}
+          resultsTitle={business.simulator_results_title}
+          resultsDescription={business.simulator_results_description}
+          badge1={business.simulator_badge_1}
+          badge2={business.simulator_badge_2}
+          badge3={business.simulator_badge_3}
           whatsappNumber={business.whatsapp_number}
           whatsappMessage={business.whatsapp_message ?? ''}
         />

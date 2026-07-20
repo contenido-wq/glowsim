@@ -9,11 +9,21 @@ interface BannerUploaderProps {
   businessId: string
   currentBannerUrl: string | null
   onBannerChange?: (url: string | null) => void
+  fileName?: string
+  updateAction?: (url: string) => Promise<void>
+  removeAction?: (path?: string) => Promise<void>
 }
 
 type UploadState = 'idle' | 'compressing' | 'uploading' | 'error'
 
-export function BannerUploader({ businessId, currentBannerUrl, onBannerChange }: BannerUploaderProps) {
+export function BannerUploader({
+  businessId,
+  currentBannerUrl,
+  onBannerChange,
+  fileName = 'banner',
+  updateAction = updateBusinessBanner,
+  removeAction = removeBusinessBanner,
+}: BannerUploaderProps) {
   const [bannerUrl, setBannerUrl] = useState(currentBannerUrl)
   const [uploadState, setUploadState] = useState<UploadState>('idle')
   const [errorMsg, setErrorMsg] = useState('')
@@ -42,7 +52,7 @@ export function BannerUploader({ businessId, currentBannerUrl, onBannerChange }:
       const compressed = await compressImageFile(file, { maxWidth: 1600, quality: 0.8 })
 
       setUploadState('uploading')
-      const path = `${businessId}/banner.jpg`
+      const path = `${businessId}/${fileName}.jpg`
       const supabase = createClient()
 
       const { data, error } = await supabase.storage
@@ -58,7 +68,7 @@ export function BannerUploader({ businessId, currentBannerUrl, onBannerChange }:
       const urlWithCache = `${publicUrl}?t=${Date.now()}`
 
       startTransition(async () => {
-        await updateBusinessBanner(publicUrl)
+        await updateAction(publicUrl)
         setBannerUrl(urlWithCache)
         setUploadState('idle')
         onBannerChange?.(urlWithCache)
@@ -73,7 +83,7 @@ export function BannerUploader({ businessId, currentBannerUrl, onBannerChange }:
 
   async function handleRemove() {
     startTransition(async () => {
-      await removeBusinessBanner(bannerUrl ?? undefined)
+      await removeAction(bannerUrl ?? undefined)
       setBannerUrl(null)
       onBannerChange?.(null)
     })

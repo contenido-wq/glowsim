@@ -27,6 +27,14 @@ export interface Business {
   facebook_url?: string | null
   website_url?: string | null
   maps_url?: string | null
+  simulator_banner_url?: string | null
+  simulator_headline_1?: string | null
+  simulator_headline_2?: string | null
+  simulator_results_title?: string | null
+  simulator_results_description?: string | null
+  simulator_badge_1?: string | null
+  simulator_badge_2?: string | null
+  simulator_badge_3?: string | null
   city?: string | null
   country?: string | null
   is_active: boolean

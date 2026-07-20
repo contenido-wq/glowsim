@@ -8,6 +8,13 @@ interface SimulatorIntroProps {
   bannerUrl: string | null
   tagline: string | null
   procedureNames: string[]
+  headline1?: string | null
+  headline2?: string | null
+  resultsTitle?: string | null
+  resultsDescription?: string | null
+  badge1?: string | null
+  badge2?: string | null
+  badge3?: string | null
   whatsappUrl: string | null
   onStart: () => void
   onWhatsAppClick: () => void
@@ -18,10 +25,27 @@ export function SimulatorIntro({
   bannerUrl,
   tagline,
   procedureNames,
+  headline1,
+  headline2,
+  resultsTitle,
+  resultsDescription,
+  badge1,
+  badge2,
+  badge3,
   whatsappUrl,
   onStart,
   onWhatsAppClick,
 }: SimulatorIntroProps) {
+  const line1 = headline1 || 'Descubre tu'
+  const line2 = headline2 || 'mejor versión'
+  const resultsTitleText = resultsTitle || 'Resultados personalizados'
+  const resultsDescText = resultsDescription || 'Tecnología avanzada para mostrarte resultados reales y naturales.'
+  const badges = [
+    { icon: Lock, label: badge1 || 'Privado y seguro' },
+    { icon: Star, label: badge2 || 'Resultados realistas' },
+    { icon: Heart, label: badge3 || 'Atención personalizada' },
+  ]
+
   return (
     <div className="flex flex-col gap-7 pb-8">
       {/* Hero photo */}
@@ -41,9 +65,9 @@ export function SimulatorIntro({
           />
           <div className="absolute inset-0 flex flex-col justify-center px-6 gap-4 max-w-[75%]">
             <h1 className="text-3xl leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-              <span className="text-white">Descubre tu</span>
+              <span className="text-white">{line1}</span>
               <br />
-              <span style={{ color: GOLD }}>mejor versión</span>
+              <span style={{ color: GOLD }}>{line2}</span>
             </h1>
             <span className="h-px w-16" style={{ background: GOLD }} />
             {tagline && <p className="text-sm text-zinc-300 leading-relaxed">{tagline}</p>}
@@ -52,9 +76,9 @@ export function SimulatorIntro({
       ) : (
         <div className="px-6 pt-10 flex flex-col gap-4">
           <h1 className="text-3xl leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-            <span className="text-white">Descubre tu</span>
+            <span className="text-white">{line1}</span>
             <br />
-            <span style={{ color: GOLD }}>mejor versión</span>
+            <span style={{ color: GOLD }}>{line2}</span>
           </h1>
           <span className="h-px w-16" style={{ background: GOLD }} />
           {tagline && <p className="text-sm text-zinc-300 leading-relaxed">{tagline}</p>}
@@ -120,20 +144,16 @@ export function SimulatorIntro({
             <ShieldCheck className="w-5 h-5" style={{ color: GOLD }} />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white">Resultados personalizados</h3>
+            <h3 className="text-sm font-semibold text-white">{resultsTitleText}</h3>
             <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              Tecnología avanzada para mostrarte resultados reales y naturales.
+              {resultsDescText}
             </p>
           </div>
         </div>
 
         {/* Trust badges */}
         <div className="flex items-center justify-between text-center">
-          {[
-            { icon: Lock, label: 'Privado y seguro' },
-            { icon: Star, label: 'Resultados realistas' },
-            { icon: Heart, label: 'Atención personalizada' },
-          ].map(({ icon: Icon, label }) => (
+          {badges.map(({ icon: Icon, label }) => (
             <div key={label} className="flex flex-col items-center gap-1.5 flex-1 px-1">
               <Icon className="w-4 h-4" style={{ color: GOLD }} />
               <span className="text-[11px] leading-tight" style={{ color: 'rgba(255,255,255,0.6)' }}>

@@ -20,6 +20,13 @@ interface SimulatorClientProps {
   bannerUrl?: string | null
   tagline?: string | null
   procedureNames?: string[]
+  headline1?: string | null
+  headline2?: string | null
+  resultsTitle?: string | null
+  resultsDescription?: string | null
+  badge1?: string | null
+  badge2?: string | null
+  badge3?: string | null
   whatsappNumber: string
   whatsappMessage: string
 }
@@ -34,6 +41,13 @@ export function SimulatorClient({
   bannerUrl,
   tagline,
   procedureNames = [],
+  headline1,
+  headline2,
+  resultsTitle,
+  resultsDescription,
+  badge1,
+  badge2,
+  badge3,
   whatsappNumber,
   whatsappMessage,
 }: SimulatorClientProps) {
@@ -111,6 +125,13 @@ export function SimulatorClient({
           bannerUrl={bannerUrl ?? null}
           tagline={tagline ?? null}
           procedureNames={procedureNames}
+          headline1={headline1 ?? null}
+          headline2={headline2 ?? null}
+          resultsTitle={resultsTitle ?? null}
+          resultsDescription={resultsDescription ?? null}
+          badge1={badge1 ?? null}
+          badge2={badge2 ?? null}
+          badge3={badge3 ?? null}
           whatsappUrl={whatsappUrl}
           onStart={() => setStep('upload')}
           onWhatsAppClick={handleWhatsAppClick}

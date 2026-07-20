@@ -30,6 +30,13 @@ export async function updateBusinessConfig(formData: FormData) {
     facebook_url: (formData.get('facebook_url') as string) || null,
     website_url: (formData.get('website_url') as string) || null,
     maps_url: (formData.get('maps_url') as string) || null,
+    simulator_headline_1: (formData.get('simulator_headline_1') as string) || null,
+    simulator_headline_2: (formData.get('simulator_headline_2') as string) || null,
+    simulator_results_title: (formData.get('simulator_results_title') as string) || null,
+    simulator_results_description: (formData.get('simulator_results_description') as string) || null,
+    simulator_badge_1: (formData.get('simulator_badge_1') as string) || null,
+    simulator_badge_2: (formData.get('simulator_badge_2') as string) || null,
+    simulator_badge_3: (formData.get('simulator_badge_3') as string) || null,
     primary_color: formData.get('primary_color') as string,
     secondary_color: formData.get('secondary_color') as string,
     city: (formData.get('city') as string) || null,
@@ -137,6 +144,37 @@ export async function removeBusinessBanner(bannerPath?: string) {
   const { error } = await supabase
     .from('businesses')
     .update({ banner_url: null })
+    .eq('id', businessId)
+  if (error) throw new Error(error.message)
+  revalidatePath('/admin/dashboard/configuracion')
+}
+
+export async function updateSimulatorBanner(bannerUrl: string) {
+  const supabase = createServiceClient()
+  const businessId = await getAdminBusinessId()
+  const { error } = await supabase
+    .from('businesses')
+    .update({ simulator_banner_url: bannerUrl })
+    .eq('id', businessId)
+  if (error) throw new Error(error.message)
+  revalidatePath('/admin/dashboard/configuracion')
+}
+
+export async function removeSimulatorBanner(bannerPath?: string) {
+  const supabase = createServiceClient()
+  const businessId = await getAdminBusinessId()
+
+  if (bannerPath) {
+    const url = new URL(bannerPath)
+    const pathInBucket = url.pathname.replace(/^\/storage\/v1\/object\/public\/banners\//, '')
+    if (pathInBucket) {
+      await supabase.storage.from('banners').remove([pathInBucket])
+    }
+  }
+
+  const { error } = await supabase
+    .from('businesses')
+    .update({ simulator_banner_url: null })
     .eq('id', businessId)
   if (error) throw new Error(error.message)
   revalidatePath('/admin/dashboard/configuracion')

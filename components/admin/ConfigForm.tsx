@@ -4,7 +4,7 @@ import { useEffect, useTransition, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { updateBusinessConfig } from '@/app/actions/admin'
+import { updateBusinessConfig, updateSimulatorBanner, removeSimulatorBanner } from '@/app/actions/admin'
 import { LogoUploader } from '@/components/admin/LogoUploader'
 import { BannerUploader } from '@/components/admin/BannerUploader'
 import type { Business } from '@/types'
@@ -194,6 +194,63 @@ export function ConfigForm({ business }: ConfigFormProps) {
               name="maps_url"
               defaultValue={business.maps_url ?? ''}
               placeholder="Google Maps (URL)"
+              className="bg-white/5 text-white border-white/15 placeholder:text-white/35"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-3 pt-2">
+          <Label className="text-white">Pantalla del simulador (opcional)</Label>
+          <BannerUploader
+            businessId={business.id}
+            currentBannerUrl={business.simulator_banner_url ?? null}
+            fileName="simulator-banner"
+            updateAction={updateSimulatorBanner}
+            removeAction={removeSimulatorBanner}
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <Input
+              name="simulator_headline_1"
+              defaultValue={business.simulator_headline_1 ?? ''}
+              placeholder="Titular línea 1 (ej: Descubre tu)"
+              className="bg-white/5 text-white border-white/15 placeholder:text-white/35"
+            />
+            <Input
+              name="simulator_headline_2"
+              defaultValue={business.simulator_headline_2 ?? ''}
+              placeholder="Titular línea 2 (ej: mejor versión)"
+              className="bg-white/5 text-white border-white/15 placeholder:text-white/35"
+            />
+          </div>
+          <Input
+            name="simulator_results_title"
+            defaultValue={business.simulator_results_title ?? ''}
+            placeholder="Título tarjeta de resultados"
+            className="bg-white/5 text-white border-white/15 placeholder:text-white/35"
+          />
+          <Input
+            name="simulator_results_description"
+            defaultValue={business.simulator_results_description ?? ''}
+            placeholder="Descripción de la tarjeta de resultados"
+            className="bg-white/5 text-white border-white/15 placeholder:text-white/35"
+          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <Input
+              name="simulator_badge_1"
+              defaultValue={business.simulator_badge_1 ?? ''}
+              placeholder="Badge 1 (ej: Privado y seguro)"
+              className="bg-white/5 text-white border-white/15 placeholder:text-white/35"
+            />
+            <Input
+              name="simulator_badge_2"
+              defaultValue={business.simulator_badge_2 ?? ''}
+              placeholder="Badge 2 (ej: Resultados realistas)"
+              className="bg-white/5 text-white border-white/15 placeholder:text-white/35"
+            />
+            <Input
+              name="simulator_badge_3"
+              defaultValue={business.simulator_badge_3 ?? ''}
+              placeholder="Badge 3 (ej: Atención personalizada)"
               className="bg-white/5 text-white border-white/15 placeholder:text-white/35"
             />
           </div>
