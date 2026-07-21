@@ -16,6 +16,39 @@ export async function getAdminBusinessId(): Promise<string> {
   return business.id
 }
 
+const UPLOAD_TARGETS = {
+  logo: { bucket: 'logos', column: 'logo_url' },
+  banner: { bucket: 'banners', column: 'banner_url' },
+  'simulator-banner': { bucket: 'banners', column: 'simulator_banner_url' },
+} as const
+
+export type UploadTarget = keyof typeof UPLOAD_TARGETS
+
+export async function uploadBusinessImage(target: UploadTarget, file: File): Promise<string> {
+  const { bucket, column } = UPLOAD_TARGETS[target]
+  const supabase = createServiceClient()
+  const businessId = await getAdminBusinessId()
+
+  const ext = file.type === 'image/png' ? 'png' : 'jpg'
+  const path = `${businessId}/${target}.${ext}`
+
+  const { error: uploadError } = await supabase.storage
+    .from(bucket)
+    .upload(path, file, { upsert: true, contentType: file.type })
+  if (uploadError) throw new Error(uploadError.message)
+
+  const { data: { publicUrl } } = supabase.storage.from(bucket).getPublicUrl(path)
+
+  const { error: updateError } = await supabase
+    .from('businesses')
+    .update({ [column]: publicUrl })
+    .eq('id', businessId)
+  if (updateError) throw new Error(updateError.message)
+
+  revalidatePath('/admin/dashboard/configuracion')
+  return publicUrl
+}
+
 export async function updateBusinessConfig(formData: FormData) {
   const supabase = createServiceClient()
   const businessId = await getAdminBusinessId()
@@ -86,17 +119,6 @@ export async function deleteProcedure(procedureId: string) {
   revalidatePath('/admin/dashboard/procedimientos')
 }
 
-export async function updateBusinessLogo(logoUrl: string) {
-  const supabase = createServiceClient()
-  const businessId = await getAdminBusinessId()
-  const { error } = await supabase
-    .from('businesses')
-    .update({ logo_url: logoUrl })
-    .eq('id', businessId)
-  if (error) throw new Error(error.message)
-  revalidatePath('/admin/dashboard/configuracion')
-}
-
 export async function removeBusinessLogo(logoPath?: string) {
   const supabase = createServiceClient()
   const businessId = await getAdminBusinessId()
@@ -118,17 +140,6 @@ export async function removeBusinessLogo(logoPath?: string) {
   revalidatePath('/admin/dashboard/configuracion')
 }
 
-export async function updateBusinessBanner(bannerUrl: string) {
-  const supabase = createServiceClient()
-  const businessId = await getAdminBusinessId()
-  const { error } = await supabase
-    .from('businesses')
-    .update({ banner_url: bannerUrl })
-    .eq('id', businessId)
-  if (error) throw new Error(error.message)
-  revalidatePath('/admin/dashboard/configuracion')
-}
-
 export async function removeBusinessBanner(bannerPath?: string) {
   const supabase = createServiceClient()
   const businessId = await getAdminBusinessId()
@@ -144,17 +155,6 @@ export async function removeBusinessBanner(bannerPath?: string) {
   const { error } = await supabase
     .from('businesses')
     .update({ banner_url: null })
-    .eq('id', businessId)
-  if (error) throw new Error(error.message)
-  revalidatePath('/admin/dashboard/configuracion')
-}
-
-export async function updateSimulatorBanner(bannerUrl: string) {
-  const supabase = createServiceClient()
-  const businessId = await getAdminBusinessId()
-  const { error } = await supabase
-    .from('businesses')
-    .update({ simulator_banner_url: bannerUrl })
     .eq('id', businessId)
   if (error) throw new Error(error.message)
   revalidatePath('/admin/dashboard/configuracion')

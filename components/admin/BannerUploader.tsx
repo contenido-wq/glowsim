@@ -1,27 +1,22 @@
 'use client'
 
 import { useRef, useState, useTransition } from 'react'
-import { createClient } from '@/lib/supabase/client'
-import { updateBusinessBanner, removeBusinessBanner } from '@/app/actions/admin'
+import { uploadBusinessImage, removeBusinessBanner, type UploadTarget } from '@/app/actions/admin'
 import { compressImageFile } from '@/lib/imageCompression'
 
 interface BannerUploaderProps {
-  businessId: string
   currentBannerUrl: string | null
   onBannerChange?: (url: string | null) => void
-  fileName?: string
-  updateAction?: (url: string) => Promise<void>
+  target?: UploadTarget
   removeAction?: (path?: string) => Promise<void>
 }
 
 type UploadState = 'idle' | 'compressing' | 'uploading' | 'error'
 
 export function BannerUploader({
-  businessId,
   currentBannerUrl,
   onBannerChange,
-  fileName = 'banner',
-  updateAction = updateBusinessBanner,
+  target = 'banner',
   removeAction = removeBusinessBanner,
 }: BannerUploaderProps) {
   const [bannerUrl, setBannerUrl] = useState(currentBannerUrl)
@@ -52,26 +47,16 @@ export function BannerUploader({
       const compressed = await compressImageFile(file, { maxWidth: 1600, quality: 0.8 })
 
       setUploadState('uploading')
-      const path = `${businessId}/${fileName}.jpg`
-      const supabase = createClient()
-
-      const { data, error } = await supabase.storage
-        .from('banners')
-        .upload(path, compressed, { upsert: true, contentType: 'image/jpeg' })
-
-      if (error) throw error
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('banners')
-        .getPublicUrl(data.path)
-
-      const urlWithCache = `${publicUrl}?t=${Date.now()}`
-
       startTransition(async () => {
-        await updateAction(publicUrl)
-        setBannerUrl(urlWithCache)
-        setUploadState('idle')
-        onBannerChange?.(urlWithCache)
+        try {
+          const publicUrl = await uploadBusinessImage(target, compressed)
+          setBannerUrl(`${publicUrl}?t=${Date.now()}`)
+          setUploadState('idle')
+          onBannerChange?.(`${publicUrl}?t=${Date.now()}`)
+        } catch (err: unknown) {
+          setErrorMsg(err instanceof Error ? err.message : 'Error al subir el banner')
+          setUploadState('error')
+        }
       })
     } catch (err: unknown) {
       setErrorMsg(err instanceof Error ? err.message : 'Error al subir el banner')

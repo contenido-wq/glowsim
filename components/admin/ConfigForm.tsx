@@ -4,7 +4,7 @@ import { useEffect, useTransition, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { updateBusinessConfig, updateSimulatorBanner, removeSimulatorBanner } from '@/app/actions/admin'
+import { updateBusinessConfig, removeSimulatorBanner } from '@/app/actions/admin'
 import { LogoUploader } from '@/components/admin/LogoUploader'
 import { BannerUploader } from '@/components/admin/BannerUploader'
 import type { Business } from '@/types'
@@ -96,7 +96,6 @@ export function ConfigForm({ business }: ConfigFormProps) {
         <div className="space-y-2">
           <Label className="text-white">Banner</Label>
           <BannerUploader
-            businessId={business.id}
             currentBannerUrl={business.banner_url ?? null}
             onBannerChange={(url) =>
               setPreviewValues((prev) => ({ ...prev, bannerUrl: url ?? '' }))
@@ -108,7 +107,6 @@ export function ConfigForm({ business }: ConfigFormProps) {
         <div className="space-y-2">
           <Label className="text-white">Logo</Label>
           <LogoUploader
-            businessId={business.id}
             businessName={business.name}
             currentLogoUrl={business.logo_url ?? null}
             onLogoChange={(url) =>
@@ -202,10 +200,8 @@ export function ConfigForm({ business }: ConfigFormProps) {
         <div className="space-y-3 pt-2">
           <Label className="text-white">Pantalla del simulador (opcional)</Label>
           <BannerUploader
-            businessId={business.id}
             currentBannerUrl={business.simulator_banner_url ?? null}
-            fileName="simulator-banner"
-            updateAction={updateSimulatorBanner}
+            target="simulator-banner"
             removeAction={removeSimulatorBanner}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

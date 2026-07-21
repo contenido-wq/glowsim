@@ -1,11 +1,9 @@
 'use client'
 
 import { useRef, useState, useTransition } from 'react'
-import { createClient } from '@/lib/supabase/client'
-import { updateBusinessLogo, removeBusinessLogo } from '@/app/actions/admin'
+import { uploadBusinessImage, removeBusinessLogo } from '@/app/actions/admin'
 
 interface LogoUploaderProps {
-  businessId: string
   businessName: string
   currentLogoUrl: string | null
   onLogoChange?: (url: string | null) => void
@@ -13,7 +11,7 @@ interface LogoUploaderProps {
 
 type UploadState = 'idle' | 'uploading' | 'error'
 
-export function LogoUploader({ businessId, businessName, currentLogoUrl, onLogoChange }: LogoUploaderProps) {
+export function LogoUploader({ businessName, currentLogoUrl, onLogoChange }: LogoUploaderProps) {
   const [logoUrl, setLogoUrl] = useState(currentLogoUrl)
   const [uploadState, setUploadState] = useState<UploadState>('idle')
   const [errorMsg, setErrorMsg] = useState('')
@@ -39,28 +37,17 @@ export function LogoUploader({ businessId, businessName, currentLogoUrl, onLogoC
     setErrorMsg('')
 
     try {
-      const ext = file.name.split('.').pop() ?? 'png'
-      const path = `${businessId}/logo.${ext}`
-      const supabase = createClient()
-
-      const { data, error } = await supabase.storage
-        .from('logos')
-        .upload(path, file, { upsert: true })
-
-      if (error) throw error
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('logos')
-        .getPublicUrl(data.path)
-
-      // Bust cache by appending timestamp
-      const urlWithCache = `${publicUrl}?t=${Date.now()}`
-
       startTransition(async () => {
-        await updateBusinessLogo(publicUrl)        // clean URL — no timestamp in DB
-        setLogoUrl(urlWithCache)                   // cache-busted for immediate UI
-        setUploadState('idle')
-        onLogoChange?.(urlWithCache)               // cache-busted for iframe preview
+        try {
+          const publicUrl = await uploadBusinessImage('logo', file)
+          const urlWithCache = `${publicUrl}?t=${Date.now()}`
+          setLogoUrl(urlWithCache)
+          setUploadState('idle')
+          onLogoChange?.(urlWithCache)
+        } catch (err: unknown) {
+          setErrorMsg(err instanceof Error ? err.message : 'Error al subir el logo')
+          setUploadState('error')
+        }
       })
     } catch (err: unknown) {
       setErrorMsg(err instanceof Error ? err.message : 'Error al subir el logo')
