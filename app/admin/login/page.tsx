@@ -32,25 +32,52 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#F0F5F8' }}>
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{
+        background: `
+          radial-gradient(ellipse 80% 40% at 50% 0%, rgba(201,168,118,0.08), transparent),
+          #0a0908`,
+      }}
+    >
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center">
-          <div className="flex items-baseline justify-center gap-0 mb-2">
-            <span className="text-2xl font-bold tracking-tight" style={{ color: '#0D1E2C' }}>glow</span>
-            <span className="text-2xl font-bold tracking-tight" style={{ color: '#4A9BB0' }}>sim</span>
+          <div className="flex items-baseline justify-center gap-0 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+            <span className="text-2xl font-medium tracking-tight text-white">glow</span>
+            <span className="text-2xl italic tracking-tight" style={{ color: '#c9a876' }}>sim</span>
           </div>
-          <p className="text-sm" style={{ color: '#6B8194' }}>Accede a tu panel de negocio</p>
+          <p className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>Accede a tu panel de negocio</p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4 p-6 rounded-2xl" style={{ background: '#FFFFFF', border: '1px solid #D4E4EE' }}>
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 p-6 rounded-2xl"
+          style={{ background: '#171721', border: '1px solid rgba(255,255,255,0.12)' }}
+        >
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+            <Label htmlFor="email" className="text-white">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              className="bg-white/5 text-white border-white/15 placeholder:text-white/35"
+            />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Contraseña</Label>
+            <Label htmlFor="password" className="text-white">Contraseña</Label>
             <div className="relative">
-              <Input id="password" type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="current-password" className="pr-10" />
-              <button type="button" onClick={() => setShowPassword(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors" style={{ color: '#9AAAB8' }}>
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+                className="pr-10 bg-white/5 text-white border-white/15 placeholder:text-white/35"
+              />
+              <button type="button" onClick={() => setShowPassword(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors" style={{ color: 'rgba(255,255,255,0.4)' }}>
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>

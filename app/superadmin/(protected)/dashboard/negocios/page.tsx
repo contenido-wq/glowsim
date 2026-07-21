@@ -25,10 +25,10 @@ export default async function NegociosPage() {
           <Button
             className="gap-2 text-sm font-medium"
             style={{
-              background: 'linear-gradient(135deg, #1B72D9 0%, #4A9BB0 100%)',
-              color: '#fff',
+              background: 'linear-gradient(135deg, #d7b98c 0%, #c9a876 100%)',
+              color: '#2a2116',
               border: 'none',
-              boxShadow: '0 4px 14px rgba(27,114,217,0.3)',
+              boxShadow: '0 4px 14px rgba(201,168,118,0.3)',
             }}
           >
             <Plus className="w-4 h-4" />Nuevo negocio

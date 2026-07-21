@@ -42,7 +42,7 @@ export default async function SuperAdminAnalyticsPage() {
             {ranked.map((biz) => (
               <tr key={biz.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }} className="last:border-0">
                 <td className="px-4 py-3 text-white">{biz.name}</td>
-                <td className="px-4 py-3 text-right font-medium" style={{ color: '#7EC8DC' }}>{biz.sims}</td>
+                <td className="px-4 py-3 text-right font-medium" style={{ color: '#c9a876' }}>{biz.sims}</td>
               </tr>
             ))}
           </tbody>

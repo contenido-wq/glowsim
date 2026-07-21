@@ -43,10 +43,13 @@ export function PhotoUploader({ onPhotoSelected, isLoading }: PhotoUploaderProps
     <div className="flex flex-col items-center gap-6 p-6 w-full">
       {!preview ? (
         <>
-          <div className="w-48 h-48 rounded-full border-2 border-dashed border-zinc-700 flex items-center justify-center bg-zinc-900">
-            <Camera className="w-16 h-16 text-zinc-600" />
+          <div
+            className="w-48 h-48 rounded-full flex items-center justify-center"
+            style={{ border: '2px dashed rgba(201,168,118,0.4)', background: 'rgba(255,255,255,0.03)' }}
+          >
+            <Camera className="w-16 h-16" style={{ color: '#c9a876' }} />
           </div>
-          <p className="text-xs text-zinc-500 text-center">
+          <p className="text-xs text-center" style={{ color: 'rgba(255,255,255,0.4)' }}>
             Tu foto no se guarda en ningún servidor
           </p>
           <div className="flex flex-col gap-3 w-full max-w-xs">
@@ -81,8 +84,8 @@ export function PhotoUploader({ onPhotoSelected, isLoading }: PhotoUploaderProps
           <img src={preview} alt="Tu foto" className="w-full rounded-xl object-cover" />
           {isLoading && (
             <div className="absolute inset-0 bg-black/60 rounded-xl flex flex-col items-center justify-center gap-3">
-              <Loader2 className="w-8 h-8 animate-spin text-white" />
-              <p className="text-sm text-white font-medium">Analizando con IA...</p>
+              <Loader2 className="w-8 h-8 animate-spin" style={{ color: '#c9a876' }} />
+              <p className="text-sm text-white" style={{ fontFamily: "'Playfair Display', serif" }}>Analizando con IA...</p>
             </div>
           )}
         </div>

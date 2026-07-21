@@ -65,7 +65,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             required
             placeholder="Clínica Belleza Total"
             style={inputStyle}
-            onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+            onFocus={e => (e.target.style.borderColor = '#8b6f47')}
             onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
           />
         </Field>
@@ -77,7 +77,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
               required
               placeholder="belleza-total"
               style={{ ...inputStyle, fontFamily: 'monospace' }}
-              onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+              onFocus={e => (e.target.style.borderColor = '#8b6f47')}
               onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
             />
             <span
@@ -98,7 +98,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             name="business_type_id"
             required
             style={{ ...inputStyle, cursor: 'pointer' }}
-            onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+            onFocus={e => (e.target.style.borderColor = '#8b6f47')}
             onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
           >
             <option value="" className="bg-[#171721]">Selecciona un tipo</option>
@@ -114,7 +114,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             required
             placeholder="+573001234567"
             style={inputStyle}
-            onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+            onFocus={e => (e.target.style.borderColor = '#8b6f47')}
             onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
           />
         </Field>
@@ -125,7 +125,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             required
             placeholder="Dra. Jessica García"
             style={inputStyle}
-            onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+            onFocus={e => (e.target.style.borderColor = '#8b6f47')}
             onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
           />
         </Field>
@@ -150,7 +150,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
                   value={value}
                   checked={accessMethod === value}
                   onChange={() => setAccessMethod(value)}
-                  className="accent-blue-600"
+                  className="accent-[#c9a876]"
                   style={{ width: '16px', height: '16px', cursor: 'pointer' }}
                 />
                 <span className="text-sm text-white">{label}</span>
@@ -169,7 +169,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
             required
             placeholder="admin@tuclinica.com"
             style={inputStyle}
-            onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+            onFocus={e => (e.target.style.borderColor = '#8b6f47')}
             onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
           />
         </Field>
@@ -184,7 +184,7 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
                 minLength={8}
                 placeholder="••••••••"
                 style={{ ...inputStyle, paddingRight: '44px' }}
-                onFocus={e => (e.target.style.borderColor = '#4A9BB0')}
+                onFocus={e => (e.target.style.borderColor = '#8b6f47')}
                 onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
               />
               <button
@@ -210,11 +210,11 @@ export function CreateBusinessForm({ businessTypes }: { businessTypes: BusinessT
           style={{
             height: '48px',
             borderRadius: '14px',
-            background: isPending ? 'rgba(27,114,217,0.5)' : 'linear-gradient(135deg, #1B72D9 0%, #4A9BB0 100%)',
-            color: '#fff',
+            background: isPending ? 'rgba(201,168,118,0.5)' : 'linear-gradient(135deg, #d7b98c 0%, #c9a876 100%)',
+            color: '#2a2116',
             border: 'none',
             cursor: isPending ? 'not-allowed' : 'pointer',
-            boxShadow: isPending ? 'none' : '0 4px 14px rgba(27,114,217,0.3)',
+            boxShadow: isPending ? 'none' : '0 4px 14px rgba(201,168,118,0.3)',
             letterSpacing: '0.01em',
           }}
         >

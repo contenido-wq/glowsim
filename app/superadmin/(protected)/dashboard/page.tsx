@@ -28,10 +28,10 @@ export default async function SuperAdminDashboardPage() {
           <Button
             className="gap-2 text-sm font-medium"
             style={{
-              background: 'linear-gradient(135deg, #1B72D9 0%, #4A9BB0 100%)',
-              color: '#fff',
+              background: 'linear-gradient(135deg, #d7b98c 0%, #c9a876 100%)',
+              color: '#2a2116',
               border: 'none',
-              boxShadow: '0 4px 14px rgba(27,114,217,0.3)',
+              boxShadow: '0 4px 14px rgba(201,168,118,0.3)',
             }}
           >
             <Plus className="w-4 h-4" />Nuevo negocio
@@ -43,16 +43,16 @@ export default async function SuperAdminDashboardPage() {
         {/* Hero gradient card */}
         <div
           className="rounded-2xl p-5 relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #1B72D9 0%, #4A9BB0 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #d7b98c 0%, #c9a876 100%)' }}
         >
           <div
             className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl pointer-events-none"
             style={{ background: '#FFFFFF', opacity: 0.15 }}
           />
-          <p className="text-[10px] uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+          <p className="text-[10px] uppercase tracking-widest mb-3" style={{ color: 'rgba(42,33,22,0.65)' }}>
             Total negocios
           </p>
-          <p className="text-3xl font-bold tabular-nums text-white">
+          <p className="text-3xl font-bold tabular-nums" style={{ color: '#2a2116' }}>
             {businesses.length}
           </p>
         </div>

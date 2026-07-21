@@ -12,19 +12,23 @@ interface ZonePanelProps {
 
 export function ZonePanel({ activeZone, allZones, summary, onZoneSelect }: ZonePanelProps) {
   return (
-    <div className="bg-zinc-900 rounded-t-3xl border-t border-zinc-800 p-6 space-y-4">
-      <div className="w-12 h-1 bg-zinc-700 rounded-full mx-auto" />
+    <div
+      className="rounded-t-3xl p-6 space-y-4"
+      style={{ background: '#171721', borderTop: '1px solid rgba(255,255,255,0.08)' }}
+    >
+      <div className="w-12 h-1 rounded-full mx-auto" style={{ background: 'rgba(255,255,255,0.15)' }} />
 
       <div className="flex flex-wrap gap-2">
         {allZones.map((zone) => (
           <button
             key={zone.svg_id}
             onClick={() => onZoneSelect(zone.svg_id)}
-            className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+            className="px-3 py-1 rounded-full text-xs font-medium transition-colors"
+            style={
               activeZone?.svg_id === zone.svg_id
-                ? 'bg-white text-black'
-                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
-            }`}
+                ? { background: '#c9a876', color: '#2a2116' }
+                : { background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.1)' }
+            }
           >
             {zone.zone_name}
           </button>
@@ -33,15 +37,21 @@ export function ZonePanel({ activeZone, allZones, summary, onZoneSelect }: ZoneP
 
       {activeZone ? (
         <div className="space-y-3">
-          <h3 className="font-semibold text-white">{activeZone.zone_name}</h3>
+          <h3 className="text-white" style={{ fontFamily: "'Playfair Display', serif" }}>{activeZone.zone_name}</h3>
           <div className="flex flex-wrap gap-2">
             {activeZone.procedures.map((proc) => (
-              <Badge key={proc} variant="secondary" className="text-xs">{proc}</Badge>
+              <span
+                key={proc}
+                className="text-xs px-2.5 py-1 rounded-full"
+                style={{ background: 'rgba(201,168,118,0.12)', color: '#d9c2a0', border: '1px solid rgba(201,168,118,0.3)' }}
+              >
+                {proc}
+              </span>
             ))}
           </div>
-          <p className="text-sm text-zinc-300 leading-relaxed">{activeZone.description}</p>
+          <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{activeZone.description}</p>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-zinc-500">Confianza:</span>
+            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Confianza:</span>
             <Badge
               variant="outline"
               className={`text-xs ${
@@ -57,7 +67,7 @@ export function ZonePanel({ activeZone, allZones, summary, onZoneSelect }: ZoneP
           </div>
         </div>
       ) : (
-        <p className="text-sm text-zinc-300 leading-relaxed">{summary}</p>
+        <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>{summary}</p>
       )}
     </div>
   )

@@ -40,8 +40,8 @@ export function FaceMap({
         el.style.cursor = 'pointer'
         el.style.transition = 'opacity 0.2s'
       } else {
-        el.style.fill = '#6b7280'
-        el.style.opacity = '0.08'
+        el.style.fill = '#c9a876'
+        el.style.opacity = '0.06'
         el.style.cursor = 'default'
       }
     })
@@ -66,7 +66,7 @@ export function FaceMap({
           dangerouslySetInnerHTML={{ __html: svgContent }}
         />
       )}
-      <p className="mt-2 text-xs text-center text-zinc-500">
+      <p className="mt-2 text-xs text-center" style={{ color: 'rgba(255,255,255,0.4)' }}>
         Toca una zona iluminada para ver las recomendaciones
       </p>
     </div>

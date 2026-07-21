@@ -75,7 +75,7 @@ export default async function AnalyticsPage() {
               sources.map(({ source, count }) => (
                 <tr key={source} style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }} className="last:border-0">
                   <td className="px-4 py-2" style={{ color: 'rgba(255,255,255,0.55)' }}>{source}</td>
-                  <td className="px-4 py-2 text-right font-medium" style={{ color: '#5AA9E6' }}>{count}</td>
+                  <td className="px-4 py-2 text-right font-medium" style={{ color: '#d9c2a0' }}>{count}</td>
                 </tr>
               ))
             )}

@@ -360,8 +360,8 @@ function PreviewPanel({ publicBase, previewUrl }: { publicBase: string; previewU
           rel="noopener noreferrer"
           className="flex-1 text-center py-2 px-3 rounded-lg text-sm font-medium transition-colors"
           style={{
-            background: 'linear-gradient(135deg, #1B72D9 0%, #4A9BB0 100%)',
-            color: '#FFFFFF',
+            background: 'linear-gradient(135deg, #d7b98c 0%, #c9a876 100%)',
+            color: '#2a2116',
           }}
         >
           Probar simulador ↗

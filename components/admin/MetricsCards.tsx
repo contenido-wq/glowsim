@@ -16,8 +16,8 @@ export function MetricsCards({ metrics, businessSlug, customDomain }: MetricsCar
       : '0.0'
 
   const darkCards = [
-    { label: 'Visitas', value: metrics.visits, sub: 'este mes', accent: '#5AA9E6' },
-    { label: 'Simulaciones', value: metrics.simulation_completes, sub: 'completadas', accent: '#7EC8DC' },
+    { label: 'Visitas', value: metrics.visits, sub: 'este mes', accent: '#d9c2a0' },
+    { label: 'Simulaciones', value: metrics.simulation_completes, sub: 'completadas', accent: '#c9a876' },
     { label: 'Conversión', value: `${convRate}%`, sub: 'visita → simulación', accent: '#E0A05A' },
   ]
 
@@ -27,19 +27,19 @@ export function MetricsCards({ metrics, businessSlug, customDomain }: MetricsCar
         {/* Hero gradient card */}
         <div
           className="col-span-2 rounded-2xl p-5 relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #1B72D9 0%, #4A9BB0 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #d7b98c 0%, #c9a876 100%)' }}
         >
           <div
             className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-2xl pointer-events-none"
             style={{ background: '#FFFFFF', opacity: 0.15 }}
           />
-          <p className="text-[10px] uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.75)' }}>
+          <p className="text-[10px] uppercase tracking-widest mb-3" style={{ color: 'rgba(42,33,22,0.65)' }}>
             Clics WhatsApp
           </p>
-          <p className="text-3xl font-bold tabular-nums leading-none text-white">
+          <p className="text-3xl font-bold tabular-nums leading-none" style={{ color: '#2a2116' }}>
             {metrics.whatsapp_clicks}
           </p>
-          <p className="text-xs mt-2" style={{ color: 'rgba(255,255,255,0.75)' }}>
+          <p className="text-xs mt-2" style={{ color: 'rgba(42,33,22,0.65)' }}>
             consultas generadas este mes
           </p>
         </div>
@@ -92,8 +92,8 @@ export function MetricsCards({ metrics, businessSlug, customDomain }: MetricsCar
           rel="noopener noreferrer"
           className="text-xs px-4 py-2 rounded-xl font-medium transition-all"
           style={{
-            background: '#1B72D9',
-            color: '#FFFFFF',
+            background: 'linear-gradient(135deg, #d7b98c 0%, #c9a876 100%)',
+            color: '#2a2116',
             border: 'none',
           }}
         >

@@ -43,7 +43,7 @@ export function Sidebar({ businessName, businessSlug, customDomain }: SidebarPro
       <div className="px-6 pt-7 pb-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="flex items-baseline gap-0 mb-5">
           <span className="text-2xl font-bold tracking-tight" style={{ color: 'white' }}>glow</span>
-          <span className="text-2xl font-bold tracking-tight" style={{ color: '#4A9BB0' }}>sim</span>
+          <span className="text-2xl font-bold tracking-tight" style={{ color: '#c9a876' }}>sim</span>
         </div>
         <div className="flex items-center gap-2 mb-1.5">
           <span
@@ -82,7 +82,7 @@ export function Sidebar({ businessName, businessSlug, customDomain }: SidebarPro
                     }
               }
             >
-              <Icon className="w-4 h-4 flex-shrink-0" style={active ? { color: '#7EC8DC' } : {}} />
+              <Icon className="w-4 h-4 flex-shrink-0" style={active ? { color: '#c9a876' } : {}} />
               {label}
             </Link>
           )

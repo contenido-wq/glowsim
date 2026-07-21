@@ -34,14 +34,14 @@ export function SuperAdminSidebar() {
       <div className="px-6 pt-7 pb-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <div className="flex items-baseline gap-0 mb-4">
           <span className="text-2xl font-bold tracking-tight" style={{ color: 'white' }}>glow</span>
-          <span className="text-2xl font-bold tracking-tight" style={{ color: '#4A9BB0' }}>sim</span>
+          <span className="text-2xl font-bold tracking-tight" style={{ color: '#c9a876' }}>sim</span>
         </div>
         <span
           className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-md font-medium"
           style={{
-            background: 'rgba(74,155,176,0.25)',
-            color: '#7EC8DC',
-            border: '1px solid rgba(74,155,176,0.3)',
+            background: 'rgba(201,168,118,0.15)',
+            color: '#c9a876',
+            border: '1px solid rgba(201,168,118,0.3)',
           }}
         >
           Superadmin
@@ -73,7 +73,7 @@ export function SuperAdminSidebar() {
                     }
               }
             >
-              <Icon className="w-4 h-4 flex-shrink-0" style={active ? { color: '#7EC8DC' } : {}} />
+              <Icon className="w-4 h-4 flex-shrink-0" style={active ? { color: '#c9a876' } : {}} />
               {label}
             </Link>
           )

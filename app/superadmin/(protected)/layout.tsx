@@ -11,7 +11,7 @@ export default async function SuperAdminLayout({ children }: { children: React.R
       className="min-h-screen p-3 lg:p-6"
       style={{
         background:
-          'radial-gradient(1200px 600px at 15% -10%, rgba(74,155,176,0.16), transparent), radial-gradient(1000px 500px at 100% 100%, rgba(107,63,217,0.14), transparent), #08080c',
+          'radial-gradient(1200px 600px at 15% -10%, rgba(201,168,118,0.12), transparent), radial-gradient(1000px 500px at 100% 100%, rgba(201,168,118,0.08), transparent), #0a0908',
       }}
     >
       <div

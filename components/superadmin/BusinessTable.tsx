@@ -83,7 +83,7 @@ export function BusinessTable({ businesses }: { businesses: Business[] }) {
                   href={getPublicUrl(biz)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-xs transition-colors hover:text-[#5AA9E6]"
+                  className="flex items-center gap-1.5 text-xs transition-colors hover:text-[#d9c2a0]"
                   style={{ color: 'rgba(255,255,255,0.4)' }}
                 >
                   {getPublicUrl(biz).replace(/^https?:\/\//, '')}

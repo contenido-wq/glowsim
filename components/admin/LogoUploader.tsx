@@ -80,7 +80,7 @@ export function LogoUploader({ businessName, currentLogoUrl, onLogoChange }: Log
           border: uploadState === 'error'
             ? '2px solid #ef4444'
             : uploadState === 'uploading'
-            ? '2px solid #4A9BB0'
+            ? '2px solid #8b6f47'
             : logoUrl
             ? '2px solid rgba(255,255,255,0.15)'
             : '2px dashed rgba(255,255,255,0.2)',
@@ -111,7 +111,7 @@ export function LogoUploader({ businessName, currentLogoUrl, onLogoChange }: Log
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
             <div
               className="w-6 h-6 rounded-full border-2 border-transparent animate-spin"
-              style={{ borderTopColor: '#4A9BB0' }}
+              style={{ borderTopColor: '#8b6f47' }}
             />
           </div>
         )}
@@ -131,7 +131,7 @@ export function LogoUploader({ businessName, currentLogoUrl, onLogoChange }: Log
           onClick={() => inputRef.current?.click()}
           disabled={isLoading}
           className="text-sm font-medium disabled:opacity-50"
-          style={{ color: '#7EC8DC' }}
+          style={{ color: '#c9a876' }}
         >
           {logoUrl ? 'Cambiar logo' : 'Subir logo'}
         </button>
@@ -154,7 +154,7 @@ export function LogoUploader({ businessName, currentLogoUrl, onLogoChange }: Log
       <style>{`
         @keyframes logo-pulse {
           0%, 100% { border-color: rgba(255,255,255,0.15); }
-          50% { border-color: #4A9BB0; }
+          50% { border-color: #8b6f47; }
         }
       `}</style>
     </div>

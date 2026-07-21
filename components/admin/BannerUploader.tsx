@@ -111,7 +111,7 @@ export function BannerUploader({
           <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
             <div
               className="w-6 h-6 rounded-full border-2 border-transparent animate-spin"
-              style={{ borderTopColor: '#4A9BB0' }}
+              style={{ borderTopColor: '#8b6f47' }}
             />
           </div>
         )}
@@ -131,7 +131,7 @@ export function BannerUploader({
           onClick={() => inputRef.current?.click()}
           disabled={isLoading}
           className="text-sm font-medium disabled:opacity-50"
-          style={{ color: '#7EC8DC' }}
+          style={{ color: '#c9a876' }}
         >
           {bannerUrl ? 'Cambiar banner' : 'Subir banner'}
         </button>
