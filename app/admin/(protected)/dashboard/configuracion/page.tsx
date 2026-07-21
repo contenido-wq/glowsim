@@ -26,7 +26,10 @@ export default async function ConfiguracionPage() {
         <h1 className="text-xl font-bold text-white">Configuración</h1>
         <p className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>Personaliza tu página pública y datos de contacto</p>
       </div>
-      <ConfigForm business={{ ...business, face_map_type: (business.business_types as any)?.face_map_type ?? 'face' } as any} />
+      <ConfigForm
+        key={business.updated_at}
+        business={{ ...business, face_map_type: (business.business_types as any)?.face_map_type ?? 'face' } as any}
+      />
     </div>
   )
 }
