@@ -1,10 +1,12 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { ChevronRight, Wand2, Sparkles, ShieldCheck, Lock, Star, Heart, MessageCircle } from 'lucide-react'
 
 const GOLD = '#c9a876'
 
 interface SimulatorIntroProps {
   businessName: string
+  logoUrl?: string | null
   bannerUrl: string | null
   tagline: string | null
   procedureNames: string[]
@@ -16,12 +18,14 @@ interface SimulatorIntroProps {
   badge2?: string | null
   badge3?: string | null
   whatsappUrl: string | null
-  onStart: () => void
-  onWhatsAppClick: () => void
+  startHref?: string
+  onStart?: () => void
+  onWhatsAppClick?: () => void
 }
 
 export function SimulatorIntro({
   businessName,
+  logoUrl,
   bannerUrl,
   tagline,
   procedureNames,
@@ -33,6 +37,7 @@ export function SimulatorIntro({
   badge2,
   badge3,
   whatsappUrl,
+  startHref,
   onStart,
   onWhatsAppClick,
 }: SimulatorIntroProps) {
@@ -46,68 +51,101 @@ export function SimulatorIntro({
     { icon: Heart, label: badge3 || 'Atención personalizada' },
   ]
 
+  const heroDescription = tagline
+
   return (
     <div className="flex flex-col gap-7 pb-8">
-      {/* Hero photo */}
-      {bannerUrl ? (
-        <div className="relative w-full aspect-[4/5]">
-          <Image
-            src={bannerUrl}
-            alt={businessName}
-            fill
-            sizes="(max-width: 640px) 100vw, 640px"
-            className="object-cover"
-            priority
-          />
+      {/* Hero */}
+      <div className="relative w-full overflow-hidden" style={{ background: '#0a0908' }}>
+        {/* Anillo glow detrás de la foto */}
+        {bannerUrl && (
           <div
-            className="absolute inset-0"
-            style={{ background: 'linear-gradient(90deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 50%, transparent 100%)' }}
+            className="absolute top-8 right-[-10%] w-[70%] aspect-square rounded-full pointer-events-none"
+            style={{
+              border: '1px solid rgba(201,168,118,0.5)',
+              boxShadow: '0 0 60px rgba(201,168,118,0.35), inset 0 0 40px rgba(201,168,118,0.15)',
+            }}
           />
-          <div className="absolute inset-0 flex flex-col justify-center px-6 gap-4 max-w-[75%]">
-            <h1 className="text-3xl leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-              <span className="text-white">{line1}</span>
+        )}
+
+        {/* Logo + nombre arriba izquierda */}
+        <div className="relative z-10 px-6 pt-8 flex flex-col gap-2">
+          {logoUrl && <Image src={logoUrl} alt="" width={44} height={44} />}
+          <span className="text-[11px] tracking-[0.25em] uppercase" style={{ color: GOLD }}>
+            {businessName}
+          </span>
+        </div>
+
+        {/* Foto a la derecha, texto a la izquierda */}
+        <div className={`relative flex items-end ${bannerUrl ? 'min-h-[380px]' : 'pt-6'}`}>
+          {bannerUrl && (
+            <>
+              <Image
+                src={bannerUrl}
+                alt={businessName}
+                fill
+                priority
+                className="object-cover object-right-top"
+                sizes="(max-width: 640px) 100vw, 640px"
+              />
+              {/* Gradiente para legibilidad del texto */}
+              <div
+                className="absolute inset-0"
+                style={{ background: 'linear-gradient(90deg, rgba(10,9,8,0.95) 0%, rgba(10,9,8,0.6) 45%, transparent 70%)' }}
+              />
+            </>
+          )}
+          <div className={`relative z-10 px-6 pb-10 flex flex-col gap-4 ${bannerUrl ? 'max-w-[60%]' : ''}`}>
+            <h1 className="text-[32px] leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
+              <span className="text-white font-normal">{line1}</span>
               <br />
-              <span style={{ color: GOLD }}>{line2}</span>
+              <span className="italic" style={{ color: GOLD }}>{line2}</span>
             </h1>
-            <span className="h-px w-16" style={{ background: GOLD }} />
-            {tagline && <p className="text-sm text-zinc-300 leading-relaxed">{tagline}</p>}
+            <span className="h-px w-20" style={{ background: `linear-gradient(90deg, ${GOLD}, transparent)` }} />
+            {heroDescription && (
+              <p className="text-[13px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                {heroDescription}
+              </p>
+            )}
           </div>
         </div>
-      ) : (
-        <div className="px-6 pt-10 flex flex-col gap-4">
-          <h1 className="text-3xl leading-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
-            <span className="text-white">{line1}</span>
-            <br />
-            <span style={{ color: GOLD }}>{line2}</span>
-          </h1>
-          <span className="h-px w-16" style={{ background: GOLD }} />
-          {tagline && <p className="text-sm text-zinc-300 leading-relaxed">{tagline}</p>}
-        </div>
-      )}
+      </div>
 
       <div className="px-6 flex flex-col gap-7">
         {/* Simulador CTA */}
-        <button
-          onClick={onStart}
-          className="flex items-center gap-4 w-full rounded-2xl p-4 text-left transition-transform active:scale-[0.98]"
-          style={{ border: `1px solid ${GOLD}`, background: 'rgba(201,168,118,0.06)' }}
-        >
-          <div
-            className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-            style={{ border: `1px solid ${GOLD}` }}
-          >
-            <Wand2 className="w-5 h-5" style={{ color: GOLD }} />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="text-lg text-white" style={{ fontFamily: "'Playfair Display', serif" }}>
-              Simulador
-            </h3>
-            <p className="text-xs" style={{ color: GOLD }}>
-              Visualiza tu resultado ideal
-            </p>
-          </div>
-          <ChevronRight className="w-5 h-5 flex-shrink-0" style={{ color: GOLD }} />
-        </button>
+        {(() => {
+          const cta = (
+            <div
+              className="flex items-center gap-4 w-full rounded-2xl p-4 text-left transition-transform active:scale-[0.98]"
+              style={{ border: `1px solid ${GOLD}`, background: 'rgba(201,168,118,0.06)' }}
+            >
+              <div
+                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ border: `1px solid ${GOLD}` }}
+              >
+                <Wand2 className="w-5 h-5" style={{ color: GOLD }} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-lg text-white" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  Simulador
+                </h3>
+                <p className="text-xs" style={{ color: GOLD }}>
+                  Visualiza tu resultado ideal
+                </p>
+              </div>
+              <ChevronRight className="w-5 h-5 flex-shrink-0" style={{ color: GOLD }} />
+            </div>
+          )
+          return startHref ? (
+            <Link href={startHref} className="block w-full">
+              {cta}
+            </Link>
+          ) : (
+            <button onClick={onStart} className="block w-full">
+              {cta}
+            </button>
+          )
+        })()}
 
         {/* Explora y simula */}
         {procedureNames.length > 0 && (

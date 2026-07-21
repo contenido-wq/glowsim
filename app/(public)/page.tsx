@@ -1,8 +1,7 @@
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
-import { BusinessHero } from '@/components/public/BusinessHero'
-import { ProcedureCards } from '@/components/public/ProcedureCards'
+import { HomeIntroClient } from '@/components/public/HomeIntroClient'
 import { logEvent } from '@/app/actions/analytics'
 
 export default async function PublicPage({
@@ -24,7 +23,7 @@ export default async function PublicPage({
 
   const { data: procedures } = await supabase
     .from('procedures')
-    .select('*, zone:procedure_zones(svg_id, name)')
+    .select('id, name')
     .eq('business_id', businessId)
     .eq('is_active', true)
     .order('sort_order')
@@ -44,24 +43,31 @@ export default async function PublicPage({
   })
 
   return (
-    <main>
-      <BusinessHero
+    <main
+      style={{
+        background: `
+          radial-gradient(ellipse 80% 40% at 50% 0%, rgba(201,168,118,0.08), transparent),
+          #0a0908`,
+      }}
+    >
+      <HomeIntroClient
+        businessId={businessId}
         businessName={business.name}
-        tagline={business.tagline}
-        primaryColor={business.primary_color}
         logoUrl={business.logo_url}
         bannerUrl={business.banner_url}
+        tagline={business.tagline}
+        procedureNames={(procedures ?? []).map((p) => p.name)}
+        headline1={business.simulator_headline_1}
+        headline2={business.simulator_headline_2}
+        resultsTitle={business.simulator_results_title}
+        resultsDescription={business.simulator_results_description}
+        badge1={business.simulator_badge_1}
+        badge2={business.simulator_badge_2}
+        badge3={business.simulator_badge_3}
         whatsappNumber={business.whatsapp_number}
         whatsappMessage={business.whatsapp_message}
-        instagramUrl={business.instagram_url}
-        tiktokUrl={business.tiktok_url}
-        facebookUrl={business.facebook_url}
-        websiteUrl={business.website_url}
-        mapsUrl={business.maps_url}
-        hasProcedures={(procedures ?? []).length > 0}
       />
-      <ProcedureCards procedures={procedures ?? []} primaryColor={business.primary_color} />
-      <footer className="text-center py-8 text-xs text-zinc-700">
+      <footer className="text-center py-8 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
         {business.city && `${business.city} · `}Powered by GlowSim
       </footer>
     </main>

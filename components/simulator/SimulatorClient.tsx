@@ -17,6 +17,7 @@ interface SimulatorClientProps {
   businessName: string
   faceMapType: FaceMapType
   primaryColor: string
+  logoUrl?: string | null
   bannerUrl?: string | null
   tagline?: string | null
   procedureNames?: string[]
@@ -38,6 +39,7 @@ export function SimulatorClient({
   businessName,
   faceMapType,
   primaryColor,
+  logoUrl,
   bannerUrl,
   tagline,
   procedureNames = [],
@@ -122,6 +124,7 @@ export function SimulatorClient({
       {step === 'intro' && (
         <SimulatorIntro
           businessName={businessName}
+          logoUrl={logoUrl ?? null}
           bannerUrl={bannerUrl ?? null}
           tagline={tagline ?? null}
           procedureNames={procedureNames}

@@ -28,8 +28,15 @@ export default async function SimularPage() {
     .order('sort_order')
 
   return (
-    <main className="min-h-screen bg-zinc-950">
-      <div className="sticky top-0 z-10 bg-zinc-950/80 backdrop-blur border-b border-zinc-900 px-4 py-3 flex items-center gap-3">
+    <main
+      className="min-h-screen"
+      style={{
+        background: `
+          radial-gradient(ellipse 80% 40% at 50% 0%, rgba(201,168,118,0.08), transparent),
+          #0a0908`,
+      }}
+    >
+      <div className="sticky top-0 z-10 backdrop-blur border-b px-4 py-3 flex items-center gap-3" style={{ background: 'rgba(10,9,8,0.8)', borderColor: 'rgba(255,255,255,0.08)' }}>
         <Link href="/" className="text-zinc-400 hover:text-white transition-colors">←</Link>
         <span className="text-sm font-medium text-white truncate">{business.name}</span>
       </div>
@@ -39,6 +46,7 @@ export default async function SimularPage() {
           businessName={business.name}
           faceMapType={faceMapType}
           primaryColor={business.primary_color}
+          logoUrl={business.logo_url}
           bannerUrl={business.simulator_banner_url ?? business.banner_url}
           tagline={business.tagline}
           procedureNames={(procedures ?? []).map((p) => p.name)}
